@@ -1,0 +1,122 @@
+package com.ajzia.simplist.screens.edit_list
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.ajzia.simplist.model.ProductDetails
+import com.ajzia.simplist.ui.theme.Blue100
+
+@Composable
+fun EditListCard(
+  modifier: Modifier = Modifier,
+  name: String,
+  productsDetails: List<ProductDetails>,
+  color: Color,
+  onNameChange: (String) -> Unit,
+  onRemove: (Int) -> Unit,
+  onAdd: (String, String) -> Unit,
+) {
+
+  Card(
+    modifier = modifier,
+    shape = RoundedCornerShape(24.dp),
+    elevation = CardDefaults.cardElevation(8.dp),
+    colors = CardDefaults.cardColors(
+      containerColor = color
+    )
+  ) {
+    Column(
+      modifier = Modifier.padding(8.dp),
+      verticalArrangement = Arrangement.Center,
+      horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+      TextField(
+        textStyle = MaterialTheme.typography.bodyLarge,
+        modifier = Modifier.fillMaxWidth(0.9f),
+        value = name,
+        onValueChange = { onNameChange(it) },
+        placeholder = { Text("Enter list name") },
+        colors = TextFieldDefaults.colors(
+          focusedContainerColor = Color.Transparent,
+          unfocusedContainerColor = Color.Transparent,
+          disabledContainerColor = Color.Transparent,
+          focusedIndicatorColor = Color.Unspecified,
+          unfocusedIndicatorColor = Color.Unspecified,
+          disabledIndicatorColor= Color.Unspecified,
+        ),
+        keyboardOptions = KeyboardOptions(
+          keyboardType = KeyboardType.Text,
+          imeAction = ImeAction.Next
+        ),
+      )
+
+      val modifier: Modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)
+
+      if (!productsDetails.isEmpty()) {
+        for ((i, details) in productsDetails.withIndex()) {
+          EditListLine(
+            modifier = modifier,
+            name = details.name,
+            quantity = details.quantity,
+            isChecked = details.isChecked,
+            onRemove = { onRemove(i) },
+            color = color
+          )
+        } // EditListLine
+      }
+
+      EditListLine(
+        modifier = modifier,
+        color = color,
+        onAdd = onAdd
+      )
+
+      Spacer(modifier = Modifier.height(8.dp))
+
+    } // Column
+  } // Card
+
+}
+
+
+@Composable
+@Preview(showBackground = true)
+fun EditListCardPreview() {
+  val details = listOf(
+    ProductDetails("Carrot", "1", true, 2),
+    ProductDetails("Banana", "1", true, 0),
+    ProductDetails("Apple", "1", false, 100),
+    ProductDetails("Tomato", "1", true, 3),
+    ProductDetails("Cucumber", "1", false, 8),
+    ProductDetails("Watermelon", "1", true, 2),
+  )
+
+  EditListCard(
+    name = "",
+    productsDetails = details,
+    color = Blue100,
+    onNameChange = {},
+    onRemove = {},
+    onAdd = {i, j -> },
+  )
+}
