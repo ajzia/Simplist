@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.ajzia.simplist.model.Category
 import com.ajzia.simplist.model.Product
 import com.ajzia.simplist.screens.components.DefaultScreen
 import com.ajzia.simplist.viewmodel.ProductsViewModel
@@ -31,24 +30,14 @@ fun ProductsScreen(
 ) {
 
   val listState = rememberLazyListState()
+
   var openAlertDialog by remember { mutableStateOf(false) }
   var selectedCategory by remember { mutableStateOf("") }
-
   var productName by remember { mutableStateOf("") }
 
-
   val productsRoom by productsViewModel.productsRoom.collectAsState(emptyList())
-//  val productsFirebase by productsViewModel.productsFirebase.collectAsState(emptyList())
-//  val categories by productsViewModel.categories.collectAsState(emptyList())
+  val categories by productsViewModel.categories.collectAsState(emptyList())
 
-  // temporary dummy data
-  val categories = listOf(
-    Category("1", "Fruit", "1234"),
-    Category("2", "Vegetables", "1234"),
-    Category("3", "Clothes", "1234"),
-    Category("4", "Electronics", "1234"),
-    Category("5", "Books", "1234"),
-  )
 
   if (openAlertDialog) {
     ProductDialog(
@@ -83,27 +72,27 @@ fun ProductsScreen(
             Toast.LENGTH_SHORT
           ).show()
 
-          openAlertDialog = false
           productName = ""
         }
       } // onAdd
     )
   }
 
-  DefaultScreen(navController) { paddingValues ->
+
+  DefaultScreen(navController, false) { paddingValues ->
     LazyColumn(
       modifier = Modifier
         .fillMaxSize()
         .padding(paddingValues),
       state = listState
     ) {
-      items(categories) { category ->
+      items(categories.sortedBy { it.name }) { category ->
         CategoryDisplay(
           modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 8.dp),
           name = category.name,
-          products = productsRoom,
+          products = productsViewModel.getCategoryProducts(productsRoom, category.id),
           onAdd = {
             selectedCategory = category.id
             openAlertDialog = true
@@ -113,7 +102,6 @@ fun ProductsScreen(
           }
         )
       }
-
     } // LazyColumn
   } // DefaultScreen
 }

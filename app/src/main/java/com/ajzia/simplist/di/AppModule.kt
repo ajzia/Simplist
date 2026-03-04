@@ -5,6 +5,7 @@ import com.ajzia.simplist.room.ProductListDao
 import com.ajzia.simplist.room.ProductListDatabase
 import com.ajzia.simplist.room.ProductListRepository
 import com.ajzia.simplist.room.ProductRepository
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,6 +16,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+  @Provides
+  @Singleton
+  fun provideFirebaseFirestore(): FirebaseFirestore {
+    return FirebaseFirestore.getInstance()
+  }
 
   @Provides
   @Singleton

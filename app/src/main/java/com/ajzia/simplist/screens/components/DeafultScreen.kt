@@ -7,7 +7,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.ajzia.simplist.nav.NavGraph
 
@@ -15,6 +14,7 @@ import com.ajzia.simplist.nav.NavGraph
 @Composable
 fun DefaultScreen(
   navController: NavController,
+  viewFAB: Boolean = true,
   content: @Composable ((PaddingValues) -> Unit)
 ) {
 
@@ -26,7 +26,7 @@ fun DefaultScreen(
       TopAppBar(scrollBehavior)
     },
     floatingActionButton = {
-      FAB { navController.navigate(NavGraph.EditList.createRoute(-1)) }
+      if (viewFAB) { FAB { navController.navigate(NavGraph.EditList.createRoute(-1)) } }
     },
     bottomBar = {
       BottomNavigationBar(
