@@ -51,7 +51,7 @@ fun ProductGrid(
               style = MaterialTheme.typography.bodyLarge
             )
 
-            if (product.isLocal) {
+            if (product.localId != 0) {
               IconButton(
                 onClick = { onRemove(product) },
                 modifier = Modifier.size(28.dp),

@@ -74,7 +74,6 @@ fun ProductsScreen(
             Product(
               name = productName,
               categoryId = selectedCategory,
-              isLocal = true
             )
           )
 

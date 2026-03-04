@@ -8,9 +8,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Product(
   @PrimaryKey(autoGenerate = true)
-  val id: Int = 0,
+  val localId: Int = 0,
+  val remoteId: String = "",
   val name: String,
   val categoryId: String,
-  val isLocal: Boolean
 )
 
