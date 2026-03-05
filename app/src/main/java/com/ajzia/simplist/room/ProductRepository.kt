@@ -5,16 +5,16 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class ProductRepository @Inject constructor(
-  val roomDao: ProductListDao
+  val productDao: ProductDao
 ) {
   val products: Flow<List<Product>> =
-    roomDao.getAllProducts()
+    productDao.getAllProducts()
 
   suspend fun insertProduct(product: Product) {
-    return roomDao.insertProduct(product)
+    return productDao.insertProduct(product)
   }
 
   suspend fun deleteProduct(product: Product) {
-    return roomDao.deleteProduct(product)
+    return productDao.deleteProduct(product)
   }
 }

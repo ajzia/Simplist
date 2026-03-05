@@ -18,6 +18,7 @@ import com.ajzia.simplist.model.ProductList
 )
 abstract class ProductListDatabase : RoomDatabase() {
   abstract fun productListDao(): ProductListDao
+  abstract fun productDao(): ProductDao
 
   companion object {
     @Volatile

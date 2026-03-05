@@ -5,28 +5,30 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class ProductListRepository @Inject constructor(
-  val roomDao: ProductListDao
+  val productListDao: ProductListDao
 ) {
+  val allProductLists: Flow<List<ProductList>> =
+    productListDao.getAllProductLists()
+
   val unArchivedProductLists: Flow<List<ProductList>> =
-    roomDao.getAllNotArchivedProductLists()
+    productListDao.getAllNotArchivedProductLists()
 
   val archivedProductLists: Flow<List<ProductList>> =
-    roomDao.getAllArchivedProductLists()
+    productListDao.getAllArchivedProductLists()
 
   fun getProductList(id: Int): Flow<ProductList?> =
-    roomDao.getProductList(id)
-
+    productListDao.getProductList(id)
 
   suspend fun insertProductList(productList: ProductList) {
-    roomDao.insertProductList(productList)
+    productListDao.insertProductList(productList)
   }
 
   suspend fun updateProductList(productList: ProductList) {
-    roomDao.updateProductList(productList)
+    productListDao.updateProductList(productList)
   }
 
   suspend fun deleteProductList(productList: ProductList) {
-    roomDao.deleteProductList(productList)
+    productListDao.deleteProductList(productList)
   }
 
 }

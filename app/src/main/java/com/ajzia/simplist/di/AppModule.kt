@@ -1,6 +1,7 @@
 package com.ajzia.simplist.di
 
 import android.content.Context
+import com.ajzia.simplist.room.ProductDao
 import com.ajzia.simplist.room.ProductListDao
 import com.ajzia.simplist.room.ProductListDatabase
 import com.ajzia.simplist.room.ProductListRepository
@@ -39,6 +40,13 @@ object AppModule {
   }
 
   @Provides
+  fun provideProductDao(
+    productListDatabase: ProductListDatabase
+  ): ProductDao {
+    return productListDatabase.productDao()
+  }
+
+  @Provides
   fun provideProductListRepository(
     productListDao: ProductListDao
   ): ProductListRepository {
@@ -47,9 +55,9 @@ object AppModule {
 
   @Provides
   fun provideProductRepository(
-    productListDao: ProductListDao
+    productDao: ProductDao
   ): ProductRepository {
-    return ProductRepository(productListDao)
+    return ProductRepository(productDao)
   }
 
 }
