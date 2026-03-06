@@ -21,7 +21,7 @@ interface ProductListDao {
   suspend fun deleteProductList(productList: ProductList)
 
   @Query("SELECT * FROM product_lists")
-  fun getAllProductLists(): Flow<List<ProductList>>
+  suspend fun getAllProductListsOnce(): List<ProductList>
 
   @Query("SELECT * FROM product_lists WHERE isArchived == 0")
   fun getAllNotArchivedProductLists(): Flow<List<ProductList>>

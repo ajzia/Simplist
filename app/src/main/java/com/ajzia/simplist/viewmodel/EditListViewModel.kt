@@ -1,11 +1,11 @@
 package com.ajzia.simplist.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ajzia.simplist.model.ProductDetails
 import com.ajzia.simplist.model.ProductList
 import com.ajzia.simplist.room.ProductListRepository
+import com.ajzia.simplist.room.ProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -15,6 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EditListViewModel @Inject constructor(
   private val repository: ProductListRepository,
+  private val productRepository: ProductRepository,
 ): ViewModel() {
 
   fun getProductList(listId: Int): Flow<ProductList?> {
@@ -26,9 +27,10 @@ class EditListViewModel @Inject constructor(
   }
 
   fun insertProductList(list: ProductList) {
-    val details = prepareDetails(list.productsDetails)
-
     viewModelScope.launch {
+      var details = assignCategoriesToProducts(list.productsDetails)
+      details = sortProductsByCategory(details)
+
       repository.insertProductList(
         list.copy(productsDetails = details)
       )
@@ -36,29 +38,33 @@ class EditListViewModel @Inject constructor(
   }
 
   fun updateProductList(list: ProductList) {
-    val details = prepareDetails(list.productsDetails)
-
     viewModelScope.launch {
+      var details = assignCategoriesToProducts(list.productsDetails)
+      details = sortProductsByCategory(details)
+
       repository.updateProductList(
         list.copy(productsDetails = details)
       )
     }
   }
 
-
-  private fun prepareDetails(
+  private suspend fun assignCategoriesToProducts(
     productsDetails: List<ProductDetails>
   ): List<ProductDetails> {
-    val details = assignCategoriesToProducts(productsDetails)
-    return sortProductsByCategory(details)
-  }
+    val products = productRepository.getAllProductsOnce()
+      .associateBy { it.name }
+    val details = productsDetails.toMutableList()
 
-  private fun assignCategoriesToProducts(
-    productsDetails: List<ProductDetails>
-  ): List<ProductDetails> {
-    // TODO
+    details.forEach { det ->
+      if (det.categoryId != Int.MAX_VALUE)
+        return@forEach
 
-    return productsDetails
+      products[det.name]?.let { product ->
+        det.categoryId = product.categoryId
+      }
+    }
+
+    return details
   }
 
   private fun sortProductsByCategory(

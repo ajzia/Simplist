@@ -29,7 +29,7 @@ fun ListLine(
   Row(
     modifier = modifier,
     verticalAlignment = Alignment.CenterVertically,
-    horizontalArrangement = Arrangement.SpaceAround
+    horizontalArrangement = Arrangement.SpaceEvenly
   ) {
 
     Checkbox(
@@ -58,7 +58,7 @@ fun ListLine(
     val quantity = (
       if (details.quantity <= 0.0) ""
       else details.quantity.toString()
-  )
+    )
 
     Text(
       modifier = Modifier.fillMaxWidth(0.3f),
@@ -69,7 +69,7 @@ fun ListLine(
         if (details.isChecked || !isEnabled) Color.Gray
         else Color.Unspecified
       ),
-      textAlign = TextAlign.End
+      textAlign = TextAlign.Start
     )
 
   } // Row
@@ -78,7 +78,7 @@ fun ListLine(
 @Composable
 @Preview(showBackground = true)
 fun ListLinePreview() {
-  val details = ProductDetails("Carrot", "1", false, 10)
+  val details = ProductDetails("Carrot", 1, false, 10)
 
   ListLine(
     details = details,

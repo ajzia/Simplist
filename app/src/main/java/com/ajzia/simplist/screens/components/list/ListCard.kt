@@ -17,15 +17,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ajzia.simplist.R
-import com.ajzia.simplist.model.ProductDetails
 import com.ajzia.simplist.model.ProductList
-import com.ajzia.simplist.ui.theme.Amber100
 
 @Composable
 fun ListCard(
@@ -77,7 +73,6 @@ fun ListCard(
           isEnabled = isUnArchived,
         )
       }
-
 
       Spacer(modifier = Modifier.height(8.dp))
 

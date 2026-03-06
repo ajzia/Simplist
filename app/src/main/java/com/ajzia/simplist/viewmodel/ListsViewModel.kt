@@ -13,7 +13,6 @@ class ListsViewModel @Inject constructor(
   private val repository: ProductListRepository
 ): ViewModel() {
 
-
   val lists = repository.unArchivedProductLists
   val archivedLists = repository.archivedProductLists
 
