@@ -2,19 +2,43 @@ package com.ajzia.simplist.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ajzia.simplist.firebase.FirestoreRepository
+import com.ajzia.simplist.model.Category
 import com.ajzia.simplist.model.ProductList
 import com.ajzia.simplist.room.ProductListRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ListsViewModel @Inject constructor(
-  private val repository: ProductListRepository
+  private val repository: ProductListRepository,
+  private val firestoreRepository: FirestoreRepository
 ): ViewModel() {
 
   val lists = repository.unArchivedProductLists
   val archivedLists = repository.archivedProductLists
+
+  private val _categories = MutableStateFlow<List<Category>>(emptyList())
+  val categories: StateFlow<List<Category>> get() = _categories
+
+  init {
+    fetchCategories()
+  }
+
+  fun fetchCategories() {
+    viewModelScope.launch {
+      firestoreRepository.getCategoriesFlow()
+        .catch { println("Error in fetching categories") }
+        .collect { categories ->
+          _categories.value = categories
+          println("Categories updated")
+        }
+    }
+  }
 
   private fun updateProductList(list: ProductList) =
     viewModelScope.launch {
@@ -30,6 +54,16 @@ class ListsViewModel @Inject constructor(
     val updatedDetails = list.productsDetails.mapIndexed { i, item ->
       if (i == index) {
         item.copy(isChecked = !item.isChecked)
+      } else item
+    }
+
+    updateProductList(list.copy(productsDetails = updatedDetails))
+  }
+
+  fun onCheckAll(list: ProductList, indexes: List<Int>, value: Boolean) {
+    val updatedDetails = list.productsDetails.mapIndexed { i, item ->
+      if (i in indexes) {
+        item.copy(isChecked = value)
       } else item
     }
 

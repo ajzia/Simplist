@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -26,6 +25,7 @@ fun ArchiveScreen(
 
   val listState = rememberLazyListState()
   val archivedLists by listsViewModel.archivedLists.collectAsState(emptyList())
+  val categories by listsViewModel.categories.collectAsState(emptyList())
 
   DefaultScreen(navController) { paddingValues ->
     LazyColumn(
@@ -40,6 +40,7 @@ fun ArchiveScreen(
           modifier = Modifier.fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 16.dp),
           productList = list,
+          categories = categories,
           onCopy = { },
           onArchive = { listsViewModel.onArchive(list) },
           onDelete = { listsViewModel.deleteProductList(list) },

@@ -14,27 +14,28 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.ajzia.simplist.R
+import com.ajzia.simplist.model.Category
 import com.ajzia.simplist.model.ProductList
 
 @Composable
 fun ListCard(
   modifier: Modifier = Modifier,
   productList: ProductList,
+  categories: List<Category>,
   onProductCheck: (Int) -> Unit = {},
+  onCheckAll: (List<Int>, Boolean) -> Unit = {i, j -> },
   onEdit: () -> Unit = {},
   onArchive: () -> Unit,
   onCopy: () -> Unit,
   onDelete: () -> Unit = {},
   isUnArchived: Boolean = true
 ) {
-
   Card(
     modifier = modifier,
     shape = RoundedCornerShape(24.dp),
@@ -47,9 +48,8 @@ fun ListCard(
     )
   ) {
     Column(
-      modifier = Modifier.padding(vertical = 8.dp),
+      modifier = Modifier.padding(vertical = 8.dp, horizontal = 8.dp),
       verticalArrangement = Arrangement.Center,
-      horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
       Text(
@@ -64,20 +64,52 @@ fun ListCard(
         ),
       )
 
-      for((index, details) in productList.productsDetails.withIndex()) {
-        ListLine(
-          modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp),
-          details = details,
+      val _categories = categories.plus(
+        Category(Int.MAX_VALUE, "Inne")
+      )
+
+      for (category in _categories.sortedBy { it.id }) {
+        val details = productList.productsDetails
+          .withIndex()
+          .filter { it.value.categoryId == category.id }
+        if (details.isEmpty()) continue
+
+        CategoryListLine(
+          modifier = Modifier
+            .padding(horizontal = 4.dp),
+          name = category.name,
           color = Color(productList.color),
-          onChecked = { onProductCheck(index) },
           isEnabled = isUnArchived,
-        )
+          isChecked = (
+              details.all { it.value.isChecked }
+          )
+        ) {
+          onCheckAll(
+            details.map { it.index },
+            !details.all { it.value.isChecked }
+          )
+        }
+
+        for(det in details) {
+          ListLine(
+            modifier = Modifier
+              .fillMaxWidth()
+              .padding(horizontal = 4.dp),
+            details = det.value,
+            color = Color(productList.color),
+            onChecked = { onProductCheck(det.index) },
+            isEnabled = isUnArchived,
+          )
+        }
       }
+
 
       Spacer(modifier = Modifier.height(8.dp))
 
       Row(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(horizontal = 8.dp),
         horizontalArrangement = Arrangement.End
       ) {
 

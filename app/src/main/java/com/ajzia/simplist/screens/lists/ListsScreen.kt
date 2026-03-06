@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -28,6 +27,8 @@ fun ListsScreen(
   val listState = rememberLazyListState()
   val lists by listsViewModel.lists.collectAsState(emptyList())
 
+  val categories by listsViewModel.categories.collectAsState(emptyList())
+
   DefaultScreen(navController) { paddingValues ->
     LazyColumn(
       modifier = Modifier
@@ -41,8 +42,12 @@ fun ListsScreen(
           modifier = Modifier.fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 16.dp),
           productList = list,
+          categories = categories,
           onProductCheck = { index ->
             listsViewModel.onCheckClick(list, index)
+          },
+          onCheckAll = { indexes, value ->
+            listsViewModel.onCheckAll(list, indexes, value)
           },
           onEdit = { navController.navigate(
             NavGraph.EditList.createRoute(list.id)
