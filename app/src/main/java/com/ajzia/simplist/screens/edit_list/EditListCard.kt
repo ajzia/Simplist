@@ -103,12 +103,12 @@ fun EditListCard(
 @Preview(showBackground = true)
 fun EditListCardPreview() {
   val details = listOf(
-    ProductDetails("Carrot", "1", true, 2),
-    ProductDetails("Banana", "1", true, 0),
-    ProductDetails("Apple", "1", false, 100),
-    ProductDetails("Tomato", "1", true, 3),
-    ProductDetails("Cucumber", "1", false, 8),
-    ProductDetails("Watermelon", "1", true, 2),
+    ProductDetails("Carrot", 1, true, 2),
+    ProductDetails("Banana", 1, true, 0),
+    ProductDetails("Apple", 1, false, 100),
+    ProductDetails("Tomato", 1, true, 3),
+    ProductDetails("Cucumber", 1, false, 8),
+    ProductDetails("Watermelon", 1, true, 2),
   )
 
   EditListCard(

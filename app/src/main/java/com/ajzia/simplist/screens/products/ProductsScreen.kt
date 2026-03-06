@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -32,12 +33,11 @@ fun ProductsScreen(
   val listState = rememberLazyListState()
 
   var openAlertDialog by remember { mutableStateOf(false) }
-  var selectedCategory by remember { mutableStateOf("") }
+  var selectedCategory by remember { mutableIntStateOf(0) }
   var productName by remember { mutableStateOf("") }
 
   val productsRoom by productsViewModel.productsRoom.collectAsState(emptyList())
   val categories by productsViewModel.categories.collectAsState(emptyList())
-
 
   if (openAlertDialog) {
     ProductDialog(
@@ -59,9 +59,12 @@ fun ProductsScreen(
           ).show()
 
         } else if (productName != ""){
+          val _productName = productName.trim()
+            .lowercase().replaceFirstChar { c -> c.uppercase() }
+
           productsViewModel.insertProduct(
             Product(
-              name = productName,
+              name = _productName,
               categoryId = selectedCategory,
             )
           )
@@ -92,7 +95,7 @@ fun ProductsScreen(
             .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 8.dp),
           name = category.name,
-          products = productsViewModel.getCategoryProducts(productsRoom, category.id),
+          products = productsRoom.filter { it.categoryId == category.id },
           onAdd = {
             selectedCategory = category.id
             openAlertDialog = true

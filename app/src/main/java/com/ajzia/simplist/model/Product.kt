@@ -11,6 +11,5 @@ data class Product(
   val localId: Int = 0,
   val remoteId: String = "",
   val name: String,
-  val categoryId: String,
+  val categoryId: Int,
 )
-

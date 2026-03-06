@@ -1,7 +1,6 @@
 package com.ajzia.simplist.screens.edit_list
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -28,7 +27,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.ajzia.simplist.model.ProductDetails
@@ -65,7 +63,6 @@ fun EditListScreen(
     }
   }
 
-
   Scaffold { paddingValues ->
     LazyColumn(
       modifier = Modifier
@@ -94,7 +91,9 @@ fun EditListScreen(
             productsDetails.removeAt(index)
           }, // onRemove
           onAdd = { productName, quantity ->
-            if (productName == "" || productName in productNames) {
+            if (productName == "") {
+              return@EditListCard
+            } else if (productName in productNames) {
               makeToast(
                 context,
                 "The product is already in the list",
@@ -117,13 +116,15 @@ fun EditListScreen(
               }
             }
 
-            productNames.plus(productName)
+            val _productName = productName.trim()
+              .lowercase().replaceFirstChar { c -> c.uppercase() }
+            productNames.plus(_productName)
 
             val details = ProductDetails(
-              productName,
-              Int.MAX_VALUE.toString(),
-              false,
-              _quantity
+              name = _productName,
+              categoryId = Int.MAX_VALUE,
+              isChecked = false,
+              quantity = _quantity
             )
             productsDetails.add(details)
           } // onAdd
