@@ -160,7 +160,6 @@ fun EditListScreen(
                   name = name,
                   color = color,
                   productsDetails = productsDetails,
-                  lastEdited = System.currentTimeMillis()
                 )
               )
 

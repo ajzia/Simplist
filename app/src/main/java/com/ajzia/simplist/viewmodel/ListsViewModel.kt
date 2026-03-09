@@ -72,7 +72,9 @@ class ListsViewModel @Inject constructor(
 
   private fun updateProductList(list: ProductList) =
     viewModelScope.launch {
-      repository.updateProductList(list)
+      repository.updateProductList(list.copy(
+        lastEdited = System.currentTimeMillis()
+      ))
     }
 
   fun deleteProductList(list: ProductList) =

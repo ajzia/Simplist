@@ -96,7 +96,7 @@ fun EditListLine(
         disabledIndicatorColor = Color.Unspecified,
       ),
       keyboardOptions = KeyboardOptions(
-        keyboardType = KeyboardType.Decimal,
+        keyboardType = KeyboardType.Number,
         imeAction = ImeAction.Done
       ),
     ) // TextField
