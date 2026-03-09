@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.ajzia.simplist.model.Product
-import com.ajzia.simplist.screens.components.DefaultScreen
+import com.ajzia.simplist.screens.components.DefaultScaffold
 import com.ajzia.simplist.viewmodel.ProductsViewModel
 
 @Composable
@@ -82,7 +82,11 @@ fun ProductsScreen(
   }
 
 
-  DefaultScreen(navController, false) { paddingValues ->
+  DefaultScaffold(
+    navController = navController,
+    onFilter = {},
+    isEnhanced = false
+  ) { paddingValues ->
     LazyColumn(
       modifier = Modifier
         .fillMaxSize()
@@ -106,5 +110,5 @@ fun ProductsScreen(
         )
       }
     } // LazyColumn
-  } // DefaultScreen
+  } // DefaultScaffold
 }

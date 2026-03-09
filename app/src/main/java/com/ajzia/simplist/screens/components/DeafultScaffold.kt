@@ -12,9 +12,11 @@ import com.ajzia.simplist.nav.NavGraph
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DefaultScreen(
+fun DefaultScaffold(
   navController: NavController,
-  viewFAB: Boolean = true,
+  isEnhanced: Boolean = true,
+  onSearch: (String) -> Unit = {},
+  onFilter: () -> Unit,
   content: @Composable ((PaddingValues) -> Unit)
 ) {
 
@@ -23,10 +25,17 @@ fun DefaultScreen(
   Scaffold(
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     topBar = {
-      TopAppBar(scrollBehavior)
+      TopAppBar(
+        scrollBehavior = scrollBehavior,
+        onSearch = { onSearch(it) },
+        onFilter = { onFilter() },
+        isEnhanced = isEnhanced
+      )
     },
     floatingActionButton = {
-      if (viewFAB) { FAB { navController.navigate(NavGraph.EditList.createRoute(-1)) } }
+      if (isEnhanced) {
+        FAB { navController.navigate(NavGraph.EditList.createRoute(-1)) }
+      }
     },
     bottomBar = {
       BottomNavigationBar(

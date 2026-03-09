@@ -7,20 +7,50 @@ import com.ajzia.simplist.model.Category
 import com.ajzia.simplist.model.ProductList
 import com.ajzia.simplist.room.ProductListRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(FlowPreview::class)
 @HiltViewModel
 class ListsViewModel @Inject constructor(
   private val repository: ProductListRepository,
   private val firestoreRepository: FirestoreRepository
 ): ViewModel() {
 
-  val lists = repository.unArchivedProductLists
-  val archivedLists = repository.archivedProductLists
+  private val _searchText = MutableStateFlow("")
+  val searchText = _searchText.asStateFlow()
+
+  private val _isSearching = MutableStateFlow(false)
+  val isSearching = _isSearching.asStateFlow()
+
+  private val _lists = MutableStateFlow(repository.lists)
+  val lists: StateFlow<List<ProductList>> = searchText
+    .debounce(100L)
+    .combine(_lists.value) { text, lists ->
+      if (text.isBlank()) {
+        lists
+      } else {
+        lists.filter { it.doesMatchQuery(text) }
+      }
+    }
+    .stateIn(
+      viewModelScope,
+      SharingStarted.WhileSubscribed(5000),
+      emptyList()
+    )
+
+  fun osSearchTextChange(text: String) {
+    _searchText.value = text
+  }
 
   private val _categories = MutableStateFlow<List<Category>>(emptyList())
   val categories: StateFlow<List<Category>> get() = _categories
@@ -104,17 +134,5 @@ class ListsViewModel @Inject constructor(
     }
     return lists
   } // filterListBy
-
-  // TODO: use this in top bar 2.0
-  fun searchLists(query: String, lists: List<ProductList>): List<ProductList> {
-    val _lists: MutableList<ProductList> = mutableListOf()
-
-    for (list in lists) {
-      if (list.name.contains(query))
-        _lists.add(list)
-    }
-
-    return _lists
-  }
 
 }

@@ -7,11 +7,8 @@ import javax.inject.Inject
 class ProductListRepository @Inject constructor(
   val productListDao: ProductListDao
 ) {
-  val unArchivedProductLists: Flow<List<ProductList>> =
-    productListDao.getAllNotArchivedProductLists()
-
-  val archivedProductLists: Flow<List<ProductList>> =
-    productListDao.getAllArchivedProductLists()
+  val lists: Flow<List<ProductList>> =
+    productListDao.getAllProductLists()
 
   suspend fun getAllProductListsOnce(): List<ProductList> =
     productListDao.getAllProductListsOnce()

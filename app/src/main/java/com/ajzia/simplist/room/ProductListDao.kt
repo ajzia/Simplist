@@ -23,11 +23,8 @@ interface ProductListDao {
   @Query("SELECT * FROM product_lists")
   suspend fun getAllProductListsOnce(): List<ProductList>
 
-  @Query("SELECT * FROM product_lists WHERE isArchived == 0")
-  fun getAllNotArchivedProductLists(): Flow<List<ProductList>>
-
-  @Query("SELECT * FROM product_lists WHERE isArchived == 1")
-  fun getAllArchivedProductLists(): Flow<List<ProductList>>
+  @Query("SELECT * FROM product_lists")
+  fun getAllProductLists(): Flow<List<ProductList>>
 
   @Query("SELECT * FROM product_lists WHERE id = :id LIMIT 1")
   fun getProductList(id: Int): Flow<ProductList?>

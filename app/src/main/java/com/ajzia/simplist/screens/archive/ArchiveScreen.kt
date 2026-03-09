@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.ajzia.simplist.screens.components.DefaultScreen
+import com.ajzia.simplist.screens.components.DefaultScaffold
 import com.ajzia.simplist.screens.components.list.ListCard
 import com.ajzia.simplist.viewmodel.ListsViewModel
 
@@ -24,10 +24,14 @@ fun ArchiveScreen(
 ) {
 
   val listState = rememberLazyListState()
-  val archivedLists by listsViewModel.archivedLists.collectAsState(emptyList())
-  val categories by listsViewModel.categories.collectAsState(emptyList())
+  val lists by listsViewModel.lists.collectAsState()
+  val categories by listsViewModel.categories.collectAsState()
 
-  DefaultScreen(navController) { paddingValues ->
+  DefaultScaffold(
+    navController = navController,
+    onSearch = { listsViewModel.osSearchTextChange(it) },
+    onFilter = {  },
+  ) { paddingValues ->
     LazyColumn(
       modifier = Modifier
         .fillMaxSize()
@@ -35,9 +39,10 @@ fun ArchiveScreen(
       state = listState
     ) {
 
-      items(archivedLists) { list ->
+      items(lists.filter { it.isArchived }) { list ->
         ListCard(
-          modifier = Modifier.fillMaxWidth()
+          modifier = Modifier
+            .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 16.dp),
           productList = list,
           categories = categories,
@@ -48,6 +53,6 @@ fun ArchiveScreen(
         )
       }
     } // LazyColumn
-  } // DefaultScreen
+  } // DefaultScaffold
 
 }

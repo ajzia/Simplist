@@ -1,19 +1,19 @@
 package com.ajzia.simplist.screens.components
 
-import androidx.compose.animation.Crossfade
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -26,56 +26,76 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.ajzia.simplist.ui.theme.CustomPurple
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import com.ajzia.simplist.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBar(
-  scrollBehavior: TopAppBarScrollBehavior
+  scrollBehavior: TopAppBarScrollBehavior,
+  onSearch: (String) -> Unit,
+  onFilter: () -> Unit, // TODO: DropdownMenu options, using ViewModel
+  isEnhanced: Boolean = true
 ) {
 
   var isSearch by remember { mutableStateOf(false) }
-  var value by remember { mutableStateOf("") }
+  var query by remember { mutableStateOf("") }
 
-  Crossfade(
-    modifier = Modifier.animateContentSize(),
-    targetState = isSearch,
-    label = "Search"
-  ) { target ->
-    if (!target) {
-      TopAppBar(
-        title = { },
-        actions = { IconButton(Icons.Filled.Search) { isSearch = !isSearch } },
-        scrollBehavior = scrollBehavior,
-        colors = TopAppBarDefaults.topAppBarColors(
-          containerColor = CustomPurple,
-          titleContentColor = Color(0xDAFFFFFF),
-          actionIconContentColor = Color(0xDAFFFFFF),
-        ),
-      )
-    } else {
-      TextField(
-        modifier = Modifier
-          .fillMaxWidth()
-          .windowInsetsPadding(TopAppBarDefaults.windowInsets),
-        placeholder = { Text("Enter list name") },
-        value = value,
-        onValueChange = { value = it },
-        leadingIcon = {
-          IconButton(Icons.AutoMirrored.Filled.ArrowBack) {
-            isSearch = !isSearch
+  TopAppBar(
+    title = { },
+    actions = {
+      if (isEnhanced) {
+        SearchField(
+          modifier = Modifier
+            .animateContentSize(
+              animationSpec = spring(
+                stiffness = Spring.StiffnessLow
+              )
+            )
+            .fillMaxWidth(if (isSearch) 1f else 0.8f)
+            .padding(4.dp),
+          isSearch = isSearch,
+          onClick = { isSearch = true },
+          query = query,
+          onSearch = {
+            query = it
+            onSearch(query)
+          },
+          onClear = {
+            query = ""
+            onSearch(query)
+          },
+          onBack = {
+            isSearch = false
+            query = ""
+            onSearch(query)
           }
-        },
-        trailingIcon = if (value.isNotBlank()) {
-          { IconButton(Icons.Filled.Close) { value = "" } }
-        } else {
-          null
-        }
-      )
-    }
-  } // Crossfade
-}
+        )
+      }
 
+      AnimatedVisibility(
+        visible = !isSearch,
+        enter = fadeIn() + expandHorizontally(),
+        exit = fadeOut() + shrinkHorizontally()
+      ) {
+        IconButton(onClick = { onFilter() }) {
+          Icon(
+            imageVector = ImageVector.vectorResource(R.drawable.outline_filter_alt_24),
+            contentDescription = "Filter contents",
+            modifier = Modifier.size(40.dp)
+          )
+        }
+      }
+    }, // actions
+    scrollBehavior = scrollBehavior,
+    colors = TopAppBarDefaults.topAppBarColors(
+      containerColor = CustomPurple,
+      scrolledContainerColor = CustomPurple,
+      actionIconContentColor = Color(0xDAFFFFFF),
+    ),
+  )
+}
 
 @Composable
 fun IconButton(imageVector: ImageVector, onClick: () -> Unit) {
