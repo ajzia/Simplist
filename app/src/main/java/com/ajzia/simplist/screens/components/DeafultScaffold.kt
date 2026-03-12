@@ -14,9 +14,9 @@ import com.ajzia.simplist.nav.NavGraph
 @Composable
 fun DefaultScaffold(
   navController: NavController,
-  isEnhanced: Boolean = true,
+  isProductScreen: Boolean = false,
   onSearch: (String) -> Unit = {},
-  onFilter: () -> Unit,
+  onFilter: (String) -> Unit,
   content: @Composable ((PaddingValues) -> Unit)
 ) {
 
@@ -28,12 +28,12 @@ fun DefaultScaffold(
       TopAppBar(
         scrollBehavior = scrollBehavior,
         onSearch = { onSearch(it) },
-        onFilter = { onFilter() },
-        isEnhanced = isEnhanced
+        onFilter = { onFilter(it) },
+        isProductScreen = isProductScreen
       )
     },
     floatingActionButton = {
-      if (isEnhanced) {
+      if (!isProductScreen) {
         FAB { navController.navigate(NavGraph.EditList.createRoute(-1)) }
       }
     },

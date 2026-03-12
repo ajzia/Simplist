@@ -8,6 +8,7 @@ import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -35,17 +36,18 @@ import com.ajzia.simplist.R
 fun TopAppBar(
   scrollBehavior: TopAppBarScrollBehavior,
   onSearch: (String) -> Unit,
-  onFilter: () -> Unit, // TODO: DropdownMenu options, using ViewModel
-  isEnhanced: Boolean = true
+  onFilter: (String) -> Unit,
+  isProductScreen: Boolean
 ) {
 
   var isSearch by remember { mutableStateOf(false) }
+  var isExpanded by remember { mutableStateOf(false) }
   var query by remember { mutableStateOf("") }
 
   TopAppBar(
     title = { },
     actions = {
-      if (isEnhanced) {
+      if (!isProductScreen) {
         SearchField(
           modifier = Modifier
             .animateContentSize(
@@ -79,11 +81,20 @@ fun TopAppBar(
         enter = fadeIn() + expandHorizontally(),
         exit = fadeOut() + shrinkHorizontally()
       ) {
-        IconButton(onClick = { onFilter() }) {
-          Icon(
-            imageVector = ImageVector.vectorResource(R.drawable.outline_filter_alt_24),
-            contentDescription = "Filter contents",
-            modifier = Modifier.size(40.dp)
+        Box {
+          IconButton(onClick = { isExpanded = !isExpanded }) {
+            Icon(
+              imageVector = ImageVector.vectorResource(R.drawable.outline_filter_alt_24),
+              contentDescription = "Filter contents",
+              modifier = Modifier.size(40.dp)
+            )
+          }
+
+          DropdownMenu(
+            isExpanded = isExpanded,
+            onDismissRequest = { isExpanded = false },
+            onFilter = { onFilter(it) },
+            isProductScreen = isProductScreen
           )
         }
       }

@@ -27,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.ajzia.simplist.model.ProductDetails
@@ -36,11 +37,12 @@ import com.ajzia.simplist.viewmodel.EditListViewModel
 
 @Composable
 fun EditListScreen(
-  context: Context,
   listId: Int,
   onBack: () -> Unit,
   editListViewModel: EditListViewModel = hiltViewModel()
 ) {
+  val context = LocalContext.current
+
   var name by remember { mutableStateOf( "") }
   var color by remember { mutableIntStateOf(DefaultCardColor.toArgb()) }
 

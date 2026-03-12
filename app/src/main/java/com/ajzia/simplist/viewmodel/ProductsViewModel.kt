@@ -7,10 +7,15 @@ import com.ajzia.simplist.model.Category
 import com.ajzia.simplist.model.Product
 import com.ajzia.simplist.room.ProductListRepository
 import com.ajzia.simplist.room.ProductRepository
+import com.ajzia.simplist.screens.utils.sortedByLocale
+import com.ajzia.simplist.screens.utils.sortedByLocaleDescending
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,10 +26,21 @@ class ProductsViewModel @Inject constructor(
   private val firestoreRepository: FirestoreRepository
 ): ViewModel() {
 
-  private val _categories = MutableStateFlow<List<Category>>(emptyList())
-  val categories: StateFlow<List<Category>> get() = _categories
+  val products = productRepository.products
 
-  val productsRoom = productRepository.products
+  private val _filter = MutableStateFlow("id")
+  val filter = _filter.asStateFlow()
+
+  private val _categories = MutableStateFlow<List<Category>>(emptyList())
+  val categories =
+    filter.combine(_categories) { flt, categories ->
+      filterCategoryBy(flt, categories)
+    }
+    .stateIn(
+      viewModelScope,
+      SharingStarted.WhileSubscribed(5000),
+      emptyList()
+    )
 
   init {
     fetchCategories()
@@ -39,6 +55,10 @@ class ProductsViewModel @Inject constructor(
           println("Categories updated")
         }
     }
+  }
+
+  fun onFilterChange(text: String) {
+    _filter.value = text
   }
 
   fun insertProduct(product: Product) {
@@ -82,4 +102,18 @@ class ProductsViewModel @Inject constructor(
       )
     } // forEach
   }
+
+  private fun filterCategoryBy(
+    filter: String,
+    lists: List<Category>
+  ): List<Category> {
+    when(filter) {
+      "id_asc"    -> return lists.sortedBy { it.id }
+      "id_desc"   -> return lists.sortedByDescending { it.id }
+      "name_asc"  -> return lists.sortedByLocale { it.name }
+      "name_desc" -> return lists.sortedByLocaleDescending { it.name }
+    }
+    return lists
+  }
+
 }

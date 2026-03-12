@@ -12,4 +12,8 @@ data class Product(
   val remoteId: String = "",
   val name: String,
   val categoryId: Int,
-)
+): Searchable {
+  override fun doesMatchQuery(query: String): Boolean {
+    return name.contains(query, ignoreCase = true)
+  }
+}

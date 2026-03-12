@@ -13,8 +13,8 @@ data class ProductList(
   var productsDetails: List<ProductDetails>,
   var dateCreated: Long = System.currentTimeMillis(),
   var lastEdited: Long = System.currentTimeMillis()
-) {
-  fun doesMatchQuery(query: String): Boolean {
+): Searchable {
+  override fun doesMatchQuery(query: String): Boolean {
     return name.contains(query, ignoreCase = true)
   }
 }

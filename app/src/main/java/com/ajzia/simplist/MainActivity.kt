@@ -51,7 +51,6 @@ class MainActivity : ComponentActivity() {
           composable(NavGraph.Products.route) {
             ProductsScreen(
               navController = navController,
-              context = applicationContext
             )
           }
 
@@ -66,9 +65,10 @@ class MainActivity : ComponentActivity() {
             val id: Int = it.arguments?.getInt("id")!!
 
             EditListScreen(
-              context = applicationContext,
               listId = id,
-              onBack = { navController.navigate(NavGraph.Lists.route) }
+              onBack = {
+                navController.navigate(NavGraph.Lists.route)
+              }
             )
 
           }

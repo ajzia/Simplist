@@ -1,6 +1,5 @@
 package com.ajzia.simplist.screens.products
 
-import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -26,17 +26,16 @@ import com.ajzia.simplist.viewmodel.ProductsViewModel
 @Composable
 fun ProductsScreen(
   navController: NavController,
-  context: Context,
   productsViewModel: ProductsViewModel = hiltViewModel()
 ) {
-
+  val context = LocalContext.current
   val listState = rememberLazyListState()
 
   var openAlertDialog by remember { mutableStateOf(false) }
   var selectedCategory by remember { mutableIntStateOf(0) }
   var productName by remember { mutableStateOf("") }
 
-  val productsRoom by productsViewModel.productsRoom.collectAsState(emptyList())
+  val products by productsViewModel.products.collectAsState(emptyList())
   val categories by productsViewModel.categories.collectAsState(emptyList())
 
   if (openAlertDialog) {
@@ -49,7 +48,7 @@ fun ProductsScreen(
         productName = ""
       },
       onAdd = {
-        if (productsRoom.any { it.name == productName }) { // lub w firebase
+        if (products.any { it.name == productName }) { // lub w firebase
           Toast.makeText(
             context,
             "Product already exists in" +
@@ -84,8 +83,8 @@ fun ProductsScreen(
 
   DefaultScaffold(
     navController = navController,
-    onFilter = {},
-    isEnhanced = false
+    onFilter = { productsViewModel.onFilterChange(it) },
+    isProductScreen = true
   ) { paddingValues ->
     LazyColumn(
       modifier = Modifier
@@ -93,13 +92,13 @@ fun ProductsScreen(
         .padding(paddingValues),
       state = listState
     ) {
-      items(categories.sortedBy { it.name }) { category ->
+      items(categories) { category ->
         CategoryDisplay(
           modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 8.dp),
           name = category.name,
-          products = productsRoom.filter { it.categoryId == category.id },
+          products = products.filter { it.categoryId == category.id },
           onAdd = {
             selectedCategory = category.id
             openAlertDialog = true
