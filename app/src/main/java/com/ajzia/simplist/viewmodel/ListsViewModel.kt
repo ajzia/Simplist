@@ -6,6 +6,8 @@ import com.ajzia.simplist.firebase.FirestoreRepository
 import com.ajzia.simplist.model.Category
 import com.ajzia.simplist.model.ProductList
 import com.ajzia.simplist.room.ProductListRepository
+import com.ajzia.simplist.screens.utils.sortedByLocale
+import com.ajzia.simplist.screens.utils.sortedByLocaleDescending
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,18 +31,20 @@ class ListsViewModel @Inject constructor(
   private val _searchText = MutableStateFlow("")
   val searchText = _searchText.asStateFlow()
 
-  private val _isSearching = MutableStateFlow(false)
-  val isSearching = _isSearching.asStateFlow()
+  private val _filter = MutableStateFlow("last_modified_desc")
+  val filter = _filter.asStateFlow()
 
   private val _lists = MutableStateFlow(repository.lists)
-  val lists: StateFlow<List<ProductList>> = searchText
-    .debounce(100L)
-    .combine(_lists.value) { text, lists ->
-      if (text.isBlank()) {
-        lists
-      } else {
-        lists.filter { it.doesMatchQuery(text) }
+  val lists = combine(
+      searchText.debounce(100L),
+      _lists.value,
+      filter
+    ) { text, lists, flt ->
+      val filtered = lists.filter {
+        text.isBlank() || it.doesMatchQuery(text)
       }
+
+      filterListBy(flt, filtered)
     }
     .stateIn(
       viewModelScope,
@@ -50,6 +54,10 @@ class ListsViewModel @Inject constructor(
 
   fun osSearchTextChange(text: String) {
     _searchText.value = text
+  }
+
+  fun onFilterChange(text: String) {
+    _filter.value = text
   }
 
   private val _categories = MutableStateFlow<List<Category>>(emptyList())
@@ -123,18 +131,19 @@ class ListsViewModel @Inject constructor(
 //    clipboard?.setPrimaryClip(clip)
   }
 
-
-  // TODO: use this in top bar 2.0
-  fun filterListBy(filter: String, lists: List<ProductList>): List<ProductList> {
+  private fun filterListBy(
+    filter: String,
+    lists: List<ProductList>
+  ): List<ProductList> {
     when(filter) {
       "date_created_asc"    -> return lists.sortedBy { it.dateCreated }
       "date_created_desc"   -> return lists.sortedByDescending { it.dateCreated }
-      "last_edited_asc"     -> return lists.sortedBy { it.lastEdited }
-      "last_edited_desc"    -> return lists.sortedByDescending { it.lastEdited }
-      "alphabetically_asc"  -> return lists.sortedBy { it.name }
-      "alphabetically_desc" -> return lists.sortedByDescending { it.name }
+      "last_modified_asc"   -> return lists.sortedBy { it.lastEdited }
+      "last_modified_desc"  -> return lists.sortedByDescending { it.lastEdited }
+      "name_asc"            -> return lists.sortedByLocale { it.name }
+      "name_desc"           -> return lists.sortedByLocaleDescending { it.name }
     }
     return lists
-  } // filterListBy
+  }
 
 }

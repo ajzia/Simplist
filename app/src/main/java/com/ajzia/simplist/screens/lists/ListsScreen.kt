@@ -31,7 +31,7 @@ fun ListsScreen(
   DefaultScaffold(
     navController = navController,
     onSearch = { listsViewModel.osSearchTextChange(it) },
-    onFilter = {  },
+    onFilter = { listsViewModel.onFilterChange(it) },
   )  { paddingValues ->
     LazyColumn(
       modifier = Modifier
