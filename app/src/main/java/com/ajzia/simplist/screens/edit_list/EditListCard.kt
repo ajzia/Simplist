@@ -22,6 +22,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ajzia.simplist.model.Product
 import com.ajzia.simplist.model.ProductDetails
 import com.ajzia.simplist.ui.theme.Blue100
 
@@ -29,8 +30,9 @@ import com.ajzia.simplist.ui.theme.Blue100
 fun EditListCard(
   modifier: Modifier = Modifier,
   name: String,
-  productsDetails: List<ProductDetails>,
   color: Color,
+  productsDetails: List<ProductDetails>,
+  products: List<Product>,
   onNameChange: (String) -> Unit,
   onRemove: (Int) -> Unit,
   onAdd: (String, String) -> Unit,
@@ -88,6 +90,7 @@ fun EditListCard(
       EditListLine(
         modifier = modifier,
         color = color,
+        products = products,
         onAdd = onAdd
       )
 
@@ -113,8 +116,9 @@ fun EditListCardPreview() {
 
   EditListCard(
     name = "",
-    productsDetails = details,
     color = Blue100,
+    productsDetails = details,
+    products = emptyList(),
     onNameChange = {},
     onRemove = {},
     onAdd = {i, j -> },

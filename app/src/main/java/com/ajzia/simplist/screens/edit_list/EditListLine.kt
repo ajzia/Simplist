@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
@@ -29,6 +31,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ajzia.simplist.model.Product
 import com.ajzia.simplist.ui.theme.Pink100
 import com.ajzia.simplist.ui.theme.checkboxColorMap
 
@@ -36,9 +39,10 @@ import com.ajzia.simplist.ui.theme.checkboxColorMap
 fun EditListLine(
   modifier: Modifier = Modifier,
   color: Color,
+  products: List<Product>,
   onAdd: (String, String) -> Unit,
 ) {
-  var name by remember { mutableStateOf("") }
+  val nameState = rememberTextFieldState()
   var quantity by remember { mutableStateOf("") }
 
   Row(
@@ -60,25 +64,13 @@ fun EditListLine(
       )
     )
 
-    TextField(
-      textStyle = MaterialTheme.typography.bodyLarge,
-      modifier =  Modifier.fillMaxWidth(0.5f),
-      value = name,
-      onValueChange = { name = it },
-      maxLines = 1,
-      placeholder = { Text("Product name") },
-      colors = TextFieldDefaults.colors(
-        focusedContainerColor = Color.Transparent,
-        unfocusedContainerColor = Color.Transparent,
-        disabledContainerColor = Color.Transparent,
-        focusedIndicatorColor = Color.Unspecified,
-        unfocusedIndicatorColor = Color.Unspecified,
-        disabledIndicatorColor = Color.Transparent,
-      ),
-      keyboardOptions = KeyboardOptions(
-        keyboardType = KeyboardType.Text,
-        imeAction = ImeAction.Next
-      ),
+    AutoCompleteTextField(
+      modifier = Modifier.fillMaxWidth(0.5f),
+      value = nameState.text.toString(),
+      onValueChange = { nameState.setTextAndPlaceCursorAtEnd(it) },
+      dropdownColor = color,
+      products = products,
+      onSuggestionSelected = { nameState.setTextAndPlaceCursorAtEnd(it) }
     )
 
     TextField(
@@ -99,12 +91,15 @@ fun EditListLine(
         keyboardType = KeyboardType.Number,
         imeAction = ImeAction.Done
       ),
-    ) // TextField
+    )
 
     IconButton(
       onClick = {
-        onAdd(name, quantity)
-        name = ""
+        onAdd(
+          nameState.text.toString().lowercase().trim(),
+          quantity
+        )
+        nameState.setTextAndPlaceCursorAtEnd("")
         quantity = ""
       },
       modifier = Modifier.padding(start = 8.dp),
@@ -149,7 +144,8 @@ fun EditListLine(
 
     Text(
       style = MaterialTheme.typography.bodyLarge,
-      modifier = Modifier.fillMaxWidth(0.5f)
+      modifier = Modifier
+        .fillMaxWidth(0.5f)
         .padding(start = 12.dp),
       text = name,
       maxLines = 1,
@@ -178,8 +174,6 @@ fun EditListLine(
 
   } // Row
 }
-
-
 
 @Composable
 @Preview(showBackground = true)

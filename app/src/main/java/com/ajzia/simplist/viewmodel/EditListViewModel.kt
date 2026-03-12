@@ -18,6 +18,8 @@ class EditListViewModel @Inject constructor(
   private val productRepository: ProductRepository,
 ): ViewModel() {
 
+  val products = productRepository.products
+
   fun getProductList(listId: Int): Flow<ProductList?> {
     return if (listId == -1) {
       flowOf(null)

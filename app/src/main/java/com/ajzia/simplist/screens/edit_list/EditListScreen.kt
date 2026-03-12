@@ -49,6 +49,8 @@ fun EditListScreen(
   val productsDetails = remember { mutableStateListOf<ProductDetails>() }
   var productNames: List<String> = mutableListOf()
 
+  val products by editListViewModel.products.collectAsState(emptyList())
+
   val list by editListViewModel
     .getProductList(listId)
     .collectAsState(initial = null)
@@ -61,7 +63,8 @@ fun EditListScreen(
 
     for (details in list!!.productsDetails) {
       productsDetails.add(details)
-      productNames = productNames.plus(details.name)
+      productNames = productNames.plus(
+        details.name.lowercase())
     }
   }
 
@@ -85,11 +88,13 @@ fun EditListScreen(
             .fillMaxWidth()
             .padding(16.dp),
           name = name,
-          productsDetails = productsDetails,
           color = Color(color),
+          productsDetails = productsDetails,
+          products = products,
           onNameChange = { name = it },
           onRemove = { index ->
-            productNames = productNames.minus(productsDetails[index].name)
+            productNames = productNames.minus(
+              productsDetails[index].name)
             productsDetails.removeAt(index)
           }, // onRemove
           onAdd = { productName, quantity ->
@@ -118,9 +123,9 @@ fun EditListScreen(
               }
             }
 
-            val _productName = productName.trim()
-              .lowercase().replaceFirstChar { c -> c.uppercase() }
-            productNames.plus(_productName)
+            productNames = productNames.plus(productName)
+            val _productName = productName
+              .replaceFirstChar { c -> c.uppercase() }
 
             val details = ProductDetails(
               name = _productName,
