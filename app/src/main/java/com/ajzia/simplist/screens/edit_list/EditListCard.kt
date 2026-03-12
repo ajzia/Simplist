@@ -1,5 +1,6 @@
 package com.ajzia.simplist.screens.edit_list
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -37,14 +38,12 @@ fun EditListCard(
   onRemove: (Int) -> Unit,
   onAdd: (String, String) -> Unit,
 ) {
-
   Card(
     modifier = modifier,
     shape = RoundedCornerShape(24.dp),
-    elevation = CardDefaults.cardElevation(8.dp),
-    colors = CardDefaults.cardColors(
-      containerColor = color
-    )
+    elevation = CardDefaults.cardElevation(4.dp),
+    colors = CardDefaults.cardColors(containerColor = color),
+    border = BorderStroke(1.dp, Color.Gray)
   ) {
     Column(
       modifier = Modifier.padding(8.dp),
@@ -98,9 +97,7 @@ fun EditListCard(
 
     } // Column
   } // Card
-
 }
-
 
 @Composable
 @Preview(showBackground = true)

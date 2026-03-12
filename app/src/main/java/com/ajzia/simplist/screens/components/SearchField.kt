@@ -1,6 +1,7 @@
 package com.ajzia.simplist.screens.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -46,6 +47,7 @@ fun SearchField(
           else Color.Transparent
         )
       ).fillMaxWidth(0.9f)
+      .border(1.dp, Color.Gray, CircleShape)
       .clickable { if (!isSearch) onClick() },
     textStyle = MaterialTheme.typography.bodyLarge,
     value = query,

@@ -2,6 +2,7 @@ package com.ajzia.simplist.screens.edit_list
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -219,9 +220,10 @@ fun Button(
   Button(
     modifier = Modifier,
     onClick = onClick,
+    border = BorderStroke(1.dp, Color.Gray),
     colors = ButtonDefaults.buttonColors(
-    containerColor = color,
-    contentColor = Color.Black,
+      containerColor = color,
+      contentColor = Color.Black,
     ),
   ) { Text(text = text, style = MaterialTheme.typography.bodyLarge) }
 }

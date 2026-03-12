@@ -26,8 +26,8 @@ import com.ajzia.simplist.ui.theme.colors
 
 @Composable
 fun ColorPicker(
-  chosenColor: Color, // TODO: mutable state of in higher function
-  onColorClick: (Color) -> Unit // TODO: { color -> chosenColor = color }
+  chosenColor: Color,
+  onColorClick: (Color) -> Unit
 ) {
 
   LazyRow(
@@ -50,7 +50,6 @@ fun ColorPicker(
       )
     }
   }
-
 }
 
 @Composable

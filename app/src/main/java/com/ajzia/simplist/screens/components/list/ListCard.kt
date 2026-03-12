@@ -1,5 +1,6 @@
 package com.ajzia.simplist.screens.components.list
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,13 +40,14 @@ fun ListCard(
   Card(
     modifier = modifier,
     shape = RoundedCornerShape(24.dp),
-    elevation = CardDefaults.cardElevation(8.dp),
+    elevation = CardDefaults.cardElevation(4.dp),
     colors = CardDefaults.cardColors(
       containerColor = (
         if (!isUnArchived) Color.LightGray
         else Color(productList.color)
       )
-    )
+    ),
+    border = BorderStroke(1.dp, Color.Gray)
   ) {
     Column(
       modifier = Modifier.padding(vertical = 8.dp, horizontal = 8.dp),

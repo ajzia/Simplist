@@ -1,6 +1,5 @@
 package com.ajzia.simplist.screens.components
 
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -41,7 +40,6 @@ fun BottomNavigationBar(
   )
 
   NavigationBar(
-    modifier = Modifier.height(84.dp),
     containerColor = Color.White,
     tonalElevation = 8.dp
   ) {
