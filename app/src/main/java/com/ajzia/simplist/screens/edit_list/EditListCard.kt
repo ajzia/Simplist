@@ -36,6 +36,7 @@ fun EditListCard(
   products: List<Product>,
   onNameChange: (String) -> Unit,
   onRemove: (Int) -> Unit,
+  onQuantityChange: (Int, String) -> Unit,
   onAdd: (String, String) -> Unit,
 ) {
   Card(
@@ -71,20 +72,24 @@ fun EditListCard(
         ),
       )
 
-      val modifier: Modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)
+      val modifier: Modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 4.dp)
 
-      if (!productsDetails.isEmpty()) {
         for ((i, details) in productsDetails.withIndex()) {
           EditListLine(
             modifier = modifier,
             name = details.name,
-            quantity = details.quantity,
+            prodQuantity = details.quantity,
             isChecked = details.isChecked,
+            color = color,
+            products = products,
             onRemove = { onRemove(i) },
-            color = color
+            onQuantityChange = {
+              onQuantityChange(i, it)
+            }
           )
         } // EditListLine
-      }
 
       EditListLine(
         modifier = modifier,
@@ -118,6 +123,7 @@ fun EditListCardPreview() {
     products = emptyList(),
     onNameChange = {},
     onRemove = {},
+    onQuantityChange = {i, j -> },
     onAdd = {i, j -> },
   )
 }

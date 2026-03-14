@@ -98,6 +98,19 @@ fun EditListScreen(
               productsDetails[index].name)
             productsDetails.removeAt(index)
           }, // onRemove
+          onQuantityChange = { index, quantity ->
+            val _quantity = checkQuantity(context, quantity)
+            if (_quantity == -1) {
+              return@EditListCard
+            }
+
+            val details = productsDetails[index]
+            if (_quantity == details.quantity) {
+              return@EditListCard
+            }
+            productsDetails[index].quantity = _quantity
+            productsDetails[index].isChecked = false
+          },
           onAdd = { productName, quantity ->
             if (productName == "") {
               return@EditListCard
@@ -110,18 +123,9 @@ fun EditListScreen(
               return@EditListCard
             }
 
-            var _quantity = 0
-            if (quantity != "") {
-              try {
-                _quantity = quantity.trim().toInt()
-              } catch (_: Exception) {
-                makeToast(
-                  context,
-                  "The quantity should be in the number format",
-                  Toast.LENGTH_SHORT
-                )
-                return@EditListCard
-              }
+            val _quantity = checkQuantity(context, quantity)
+            if (_quantity == -1) {
+              return@EditListCard
             }
 
             productNames = productNames.plus(productName)
@@ -138,11 +142,12 @@ fun EditListScreen(
           } // onAdd
         )
       }
-      
 
       item {
         Spacer(modifier = Modifier.height(16.dp))
+      }
 
+      item {
         Row(
           modifier = Modifier
             .fillMaxWidth()
@@ -201,7 +206,6 @@ fun EditListScreen(
   } // Scaffold
 }
 
-
 private fun makeToast(
   context: Context,
   text: String,
@@ -226,4 +230,32 @@ fun Button(
       contentColor = Color.Black,
     ),
   ) { Text(text = text, style = MaterialTheme.typography.bodyLarge) }
+}
+
+private fun checkQuantity(
+  context: Context,
+  quantity: String,
+): Int {
+  var _quantity = -1
+  if (quantity != "") {
+    try {
+      _quantity = quantity.trim().toInt()
+    } catch (_: Exception) {
+      makeToast(
+        context,
+        "The quantity should be in the number format",
+        Toast.LENGTH_SHORT
+      )
+      return _quantity
+    }
+  }
+
+  if (_quantity < 0) {
+    makeToast(
+      context,
+      "The quantity should be higher or equal to 0",
+      Toast.LENGTH_SHORT
+    )
+  }
+  return _quantity
 }

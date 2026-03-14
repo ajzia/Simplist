@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,22 +29,41 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ajzia.simplist.model.Product
 import com.ajzia.simplist.ui.theme.Pink100
 import com.ajzia.simplist.ui.theme.checkboxColorMap
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun EditListLine(
   modifier: Modifier = Modifier,
+  name: String = "",
+  prodQuantity: Int = -1,
+  isChecked: Boolean = false,
   color: Color,
   products: List<Product>,
-  onAdd: (String, String) -> Unit,
+  onRemove: () -> Unit = {},
+  onQuantityChange: (String) -> Unit = {},
+  onAdd: (String, String) -> Unit = {i, j -> },
 ) {
-  val nameState = rememberTextFieldState()
-  var quantity by remember { mutableStateOf("") }
+  val nameState = rememberTextFieldState(name)
+  var quantity by remember { mutableStateOf(
+    if (prodQuantity != -1) prodQuantity.toString() else "") }
+
+  var debounceJob by remember { mutableStateOf<Job?>(null) }
+  LaunchedEffect(quantity) {
+    debounceJob?.cancel()
+    debounceJob = launch {
+      delay(500)
+      if(prodQuantity != -1) {
+        onQuantityChange(quantity)
+      }
+    }
+  }
 
   Row(
     modifier = modifier,
@@ -52,7 +72,7 @@ fun EditListLine(
   ) {
 
     Checkbox(
-      checked = false,
+      checked = isChecked,
       enabled = false,
       onCheckedChange = null,
       colors = CheckboxDefaults.colors(
@@ -64,14 +84,25 @@ fun EditListLine(
       )
     )
 
-    AutoCompleteTextField(
-      modifier = Modifier.fillMaxWidth(0.5f),
-      value = nameState.text.toString(),
-      onValueChange = { nameState.setTextAndPlaceCursorAtEnd(it) },
-      dropdownColor = color,
-      products = products,
-      onSuggestionSelected = { nameState.setTextAndPlaceCursorAtEnd(it) }
-    )
+    if (name.isBlank()) {
+      AutoCompleteTextField(
+        modifier = Modifier.fillMaxWidth(0.5f),
+        value = nameState.text.toString(),
+        onValueChange = { nameState.setTextAndPlaceCursorAtEnd(it) },
+        dropdownColor = color,
+        products = products,
+        onSuggestionSelected = { nameState.setTextAndPlaceCursorAtEnd(it) }
+      )
+    } else {
+      Text(
+        style = MaterialTheme.typography.bodyLarge,
+        modifier = Modifier
+          .fillMaxWidth(0.5f)
+          .padding(start = 12.dp),
+        text = name,
+        maxLines = 1,
+      )
+    }
 
     TextField(
       textStyle = MaterialTheme.typography.bodyLarge,
@@ -95,80 +126,28 @@ fun EditListLine(
 
     IconButton(
       onClick = {
-        onAdd(
-          nameState.text.toString().lowercase().trim(),
-          quantity
-        )
-        nameState.setTextAndPlaceCursorAtEnd("")
-        quantity = ""
+        if (name.isBlank()) {
+          onAdd(
+            nameState.text.toString().lowercase().trim(),
+            quantity
+          )
+          nameState.setTextAndPlaceCursorAtEnd("")
+          quantity = ""
+        } else {
+          onRemove()
+        }
       },
       modifier = Modifier.padding(start = 8.dp),
     ) {
       Icon(
-        imageVector = Icons.Default.Add,
-        contentDescription = "Add product to the list",
-      )
-    } // IconButton
-
-  } // Row
-}
-
-
-@Composable
-fun EditListLine(
-  modifier: Modifier = Modifier,
-  name: String,
-  quantity: Int,
-  isChecked: Boolean,
-  color: Color,
-  onRemove: () -> Unit,
-) {
-  Row(
-    modifier = modifier,
-    verticalAlignment = Alignment.CenterVertically,
-    horizontalArrangement = Arrangement.SpaceAround
-  ) {
-
-    Checkbox(
-      checked = isChecked,
-      enabled = true,
-      onCheckedChange = null,
-      colors = CheckboxDefaults.colors(
-        checkedColor = checkboxColorMap[color]!!,
-        checkmarkColor = Color.Unspecified,
-        uncheckedColor = checkboxColorMap[color]!!,
-        disabledCheckedColor = checkboxColorMap[color]!!,
-        disabledUncheckedColor = checkboxColorMap[color]!!
-      )
-    )
-
-    Text(
-      style = MaterialTheme.typography.bodyLarge,
-      modifier = Modifier
-        .fillMaxWidth(0.5f)
-        .padding(start = 12.dp),
-      text = name,
-      maxLines = 1,
-    )
-
-    Text(
-      style = MaterialTheme.typography.bodyLarge,
-      modifier = Modifier.fillMaxWidth(0.45f),
-      text = (
-        if (quantity == 0) ""
-        else quantity.toString()
-      ),
-      maxLines = 1,
-      textAlign = TextAlign.End
-    ) // TextField
-
-    IconButton(
-      onClick = { onRemove() },
-      modifier = Modifier.padding(start = 8.dp),
-    ) {
-      Icon(
-        imageVector = Icons.Default.Clear,
-        contentDescription = "Remove product from list",
+        imageVector = (
+          if (name.isBlank()) Icons.Default.Add
+          else Icons.Default.Clear
+        ),
+        contentDescription = (
+          if (name.isBlank()) "Add product to the list"
+          else "Remove product from list"
+        ),
       )
     } // IconButton
 
@@ -180,9 +159,9 @@ fun EditListLine(
 fun AddListLinePreview() {
   EditListLine(
     name = "Carrot",
-    quantity = 10,
+    prodQuantity = 10,
     isChecked = false,
     color = Pink100,
-    onRemove = {}
+    products = emptyList(),
   )
 }
