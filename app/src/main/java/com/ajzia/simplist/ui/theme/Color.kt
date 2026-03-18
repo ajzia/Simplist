@@ -14,6 +14,7 @@ val Pink40 = Color(0xFF7D5260)
 val CustomGray = Color(0x00C9C9C9)
 val CustomPurple = Color(0xD5A97BEF)
 val DimmedCustomPurple = Color(0xD5D4BCFF)
+val CustomGreen = Color(123,239,169)
 
 val DefaultCardColor = Color(0xFFFFCDD2)
 
