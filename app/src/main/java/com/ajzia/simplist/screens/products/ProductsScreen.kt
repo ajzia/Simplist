@@ -87,10 +87,9 @@ fun ProductsScreen(
     isProductScreen = true
   ) { paddingValues ->
     LazyColumn(
-      modifier = Modifier
-        .fillMaxSize()
-        .padding(paddingValues),
-      state = listState
+      modifier = Modifier.fillMaxSize(),
+      state = listState,
+      contentPadding = paddingValues
     ) {
       items(categories) { category ->
         CategoryDisplay(

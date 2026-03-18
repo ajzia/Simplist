@@ -16,6 +16,7 @@ import androidx.navigation.NavController
 import com.ajzia.simplist.nav.NavGraph
 import com.ajzia.simplist.screens.components.DefaultScaffold
 import com.ajzia.simplist.screens.components.list.ListCard
+import com.ajzia.simplist.screens.utils.withExtraBottom
 import com.ajzia.simplist.viewmodel.ListsViewModel
 
 @Composable
@@ -34,10 +35,9 @@ fun ListsScreen(
     onFilter = { listsViewModel.onFilterChange(it) },
   )  { paddingValues ->
     LazyColumn(
-      modifier = Modifier
-        .fillMaxSize()
-        .padding(paddingValues),
-      state = listState
+      modifier = Modifier.fillMaxSize(),
+      state = listState,
+      contentPadding = paddingValues.withExtraBottom(72.dp)
     ) {
 
       items(lists.filter { !it.isArchived }) { list ->
