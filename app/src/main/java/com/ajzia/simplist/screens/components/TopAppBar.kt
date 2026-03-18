@@ -107,14 +107,3 @@ fun TopAppBar(
     ),
   )
 }
-
-@Composable
-fun IconButton(imageVector: ImageVector, onClick: () -> Unit) {
-  IconButton(onClick = onClick) {
-    Icon(
-      imageVector = imageVector,
-      contentDescription = null,
-      modifier = Modifier.size(28.dp)
-    )
-  }
-}

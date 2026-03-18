@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -87,4 +88,15 @@ fun SearchField(
       ) { onClear() }
     } // trailingIcon
   )
+}
+
+@Composable
+fun IconButton(imageVector: ImageVector, onClick: () -> Unit) {
+  IconButton(onClick = onClick) {
+    Icon(
+      imageVector = imageVector,
+      contentDescription = null,
+      modifier = Modifier.size(28.dp)
+    )
+  }
 }

@@ -56,7 +56,7 @@ fun ListLine(
     )
 
     val quantity = (
-      if (details.quantity <= 0.0) ""
+      if (details.quantity <= 1) ""
       else details.quantity.toString()
     )
 

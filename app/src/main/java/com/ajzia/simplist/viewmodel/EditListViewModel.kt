@@ -44,9 +44,10 @@ class EditListViewModel @Inject constructor(
       var details = assignCategoriesToProducts(list.productsDetails)
       details = sortProductsByCategory(details)
 
-      repository.updateProductList(
-        list.copy(productsDetails = details)
-      )
+      repository.updateProductList(list.copy(
+        productsDetails = details,
+        lastEdited = System.currentTimeMillis()
+      ))
     }
   }
 
