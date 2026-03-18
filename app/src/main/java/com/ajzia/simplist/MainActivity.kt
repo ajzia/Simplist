@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity() {
             EditListScreen(
               listId = id,
               onBack = {
-                navController.navigate(NavGraph.Lists.route)
+                navController.popBackStack()
               }
             )
 

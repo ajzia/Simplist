@@ -40,7 +40,11 @@ fun DefaultScaffold(
     bottomBar = {
       BottomNavigationBar(
         currentRoute = navController.currentDestination?.route!!
-      ) { route -> navController.navigate(route) }
+      ) { route ->
+        navController.navigate(route) {
+          popUpTo(NavGraph.Lists.route) { inclusive = true }
+        }
+      }
     }) { paddingValues ->
     content(paddingValues)
   }
