@@ -90,7 +90,7 @@ fun TopAppBar(
             )
           }
 
-          DropdownMenu(
+          FilterDropdownMenu(
             isExpanded = isExpanded,
             onDismissRequest = { isExpanded = false },
             onFilter = { onFilter(it) },

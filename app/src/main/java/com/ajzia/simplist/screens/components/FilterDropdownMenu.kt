@@ -7,53 +7,48 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.ajzia.simplist.R
+import com.ajzia.simplist.model.CategoryFilter
+import com.ajzia.simplist.model.ListFilter
+import com.ajzia.simplist.model.SortingMode
 
 @Composable
-fun DropdownMenu(
+fun FilterDropdownMenu(
   isExpanded: Boolean,
   isProductScreen: Boolean,
   onDismissRequest: () -> Unit,
   onFilter: (String) -> Unit,
 ) {
-  val defaultMode = if (isProductScreen) "asc" else "desc"
-  val reverseMode = if (isProductScreen) "desc" else "asc"
+  val filters = if (isProductScreen) CategoryFilter.entries else ListFilter.entries
 
-  var chosenFilter by remember { mutableIntStateOf(0) }
+  val defaultMode = if (isProductScreen) SortingMode.ASC else SortingMode.DESC
+  val reverseMode = if (isProductScreen) SortingMode.DESC else SortingMode.ASC
+
+  var chosenFilter by remember { mutableStateOf(filters.first()) }
   var chosenMode by remember { mutableStateOf(defaultMode) }
-
-  val listFilters = listOf(
-    "Last modified",
-    "Date created",
-    "Name",
-  )
-
-  val productFilters = listOf(
-    "Id",
-    "Name",
-  )
 
   DropdownMenu(
     expanded = isExpanded,
     onDismissRequest = { onDismissRequest() }
   ) {
-    val filters = if (isProductScreen) productFilters
-      else listFilters
 
-    for ((i, type) in filters.withIndex()) {
+    for (type in filters) {
+      val typeName = type.name
+        .lowercase()
+        .replace("_", " ")
+        .replaceFirstChar { c -> c.uppercase() }
       DropdownMenuItem(
-        text = { Text(text = type) },
+        text = { Text(text = typeName) },
         leadingIcon = {
-          if (chosenFilter != i) return@DropdownMenuItem
+          if (chosenFilter != type) return@DropdownMenuItem
           Icon(
             imageVector = ImageVector.vectorResource(
-              if (chosenMode == "asc")
+              if (chosenMode == SortingMode.ASC)
                 R.drawable.outline_arrow_upward_alt_24
               else R.drawable.outline_arrow_downward_alt_24
             ),
@@ -62,15 +57,13 @@ fun DropdownMenu(
         },
         onClick = {
           chosenMode =
-            if (chosenFilter == i && chosenMode == defaultMode)
+            if (chosenFilter == type && chosenMode == defaultMode)
               reverseMode
             else defaultMode
-          chosenFilter = i
+          chosenFilter = type
 
-          val filter = type
-            .replace(" ", "_")
-            .plus("_$chosenMode")
-            .lowercase()
+          val filter = type.name.lowercase()
+            .plus("_${chosenMode.name.lowercase()}")
 
           onFilter(filter)
         }
@@ -82,9 +75,9 @@ fun DropdownMenu(
 @Composable
 @Preview(showBackground = true)
 fun DropdownMenuPreview() {
-  DropdownMenu(
+  FilterDropdownMenu(
     isExpanded = true,
-    isProductScreen = true,
+    isProductScreen = false,
     onDismissRequest = {},
     onFilter = {}
   )
