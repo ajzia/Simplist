@@ -2,6 +2,7 @@ package com.ajzia.simplist.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ajzia.simplist.datastore.PreferencesDataStore
 import com.ajzia.simplist.firebase.FirestoreRepository
 import com.ajzia.simplist.model.Category
 import com.ajzia.simplist.model.ProductList
@@ -25,14 +26,14 @@ import javax.inject.Inject
 @HiltViewModel
 class ListsViewModel @Inject constructor(
   private val repository: ProductListRepository,
-  private val firestoreRepository: FirestoreRepository
+  private val firestoreRepository: FirestoreRepository,
+  private val preferencesDataStore: PreferencesDataStore
 ): ViewModel() {
 
   private val _searchText = MutableStateFlow("")
   val searchText = _searchText.asStateFlow()
 
-  private val _filter = MutableStateFlow("last_modified_desc")
-  val filter = _filter.asStateFlow()
+  val filter = preferencesDataStore.listFilterFlow()
 
   private val _lists = MutableStateFlow(repository.lists)
   val lists = combine(
@@ -56,8 +57,10 @@ class ListsViewModel @Inject constructor(
     _searchText.value = text
   }
 
-  fun onFilterChange(text: String) {
-    _filter.value = text
+  fun onFilterChange(filter: String) {
+    viewModelScope.launch {
+      preferencesDataStore.setListFilter(filter)
+    }
   }
 
   private val _categories = MutableStateFlow<List<Category>>(emptyList())

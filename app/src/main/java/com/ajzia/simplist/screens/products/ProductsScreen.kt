@@ -19,7 +19,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.ajzia.simplist.model.Product
 import com.ajzia.simplist.screens.components.DefaultScaffold
 import com.ajzia.simplist.viewmodel.ProductsViewModel
 
@@ -37,6 +36,7 @@ fun ProductsScreen(
 
   val products by productsViewModel.products.collectAsState(emptyList())
   val categories by productsViewModel.categories.collectAsState(emptyList())
+  val filter by productsViewModel.filter.collectAsState("id_asc")
 
   if (openAlertDialog) {
     ProductDialog(
@@ -57,15 +57,10 @@ fun ProductsScreen(
             Toast.LENGTH_SHORT
           ).show()
 
-        } else if (productName != ""){
-          val _productName = productName.trim()
-            .lowercase().replaceFirstChar { c -> c.uppercase() }
-
+        } else if (productName.isNotBlank()){
           productsViewModel.insertProduct(
-            Product(
-              name = _productName,
-              categoryId = selectedCategory,
-            )
+            name = productName,
+            categoryId = selectedCategory,
           )
 
           Toast.makeText(
@@ -80,9 +75,13 @@ fun ProductsScreen(
     )
   }
 
+  val productsByCategory = remember(products) {
+    products.groupBy { it.categoryId }
+  }
 
   DefaultScaffold(
     navController = navController,
+    chosenFilter = filter,
     onFilter = { productsViewModel.onFilterChange(it) },
     isProductScreen = true
   ) { paddingValues ->
@@ -97,14 +96,12 @@ fun ProductsScreen(
             .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 8.dp),
           name = category.name,
-          products = products.filter { it.categoryId == category.id },
+          products = productsByCategory[category.id].orEmpty(),
           onAdd = {
             selectedCategory = category.id
             openAlertDialog = true
           },
-          onRemove = { product ->
-            productsViewModel.deleteProduct(product)
-          }
+          onRemove = productsViewModel::deleteProduct
         )
       }
     } // LazyColumn

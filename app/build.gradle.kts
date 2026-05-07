@@ -79,4 +79,5 @@ dependencies {
   implementation(platform("com.google.firebase:firebase-bom:34.9.0"))
   implementation("com.google.firebase:firebase-firestore")
 
+  implementation("androidx.datastore:datastore-preferences:1.2.1")
 }

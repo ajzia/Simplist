@@ -30,6 +30,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.ajzia.simplist.R
+import com.ajzia.simplist.model.sorting.CategoryFilter
+import com.ajzia.simplist.model.sorting.ListFilter
+import com.ajzia.simplist.model.sorting.SortingMode
+import com.ajzia.simplist.model.sorting.parseCategoryFilter
+import com.ajzia.simplist.model.sorting.parseListFilter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,9 +42,9 @@ fun TopAppBar(
   scrollBehavior: TopAppBarScrollBehavior,
   onSearch: (String) -> Unit,
   onFilter: (String) -> Unit,
-  isProductScreen: Boolean
+  isProductScreen: Boolean,
+  chosenFilter: String,
 ) {
-
   var isSearch by remember { mutableStateOf(false) }
   var isExpanded by remember { mutableStateOf(false) }
   var query by remember { mutableStateOf("") }
@@ -90,12 +95,25 @@ fun TopAppBar(
             )
           }
 
-          FilterDropdownMenu(
-            isExpanded = isExpanded,
-            onDismissRequest = { isExpanded = false },
-            onFilter = { onFilter(it) },
-            isProductScreen = isProductScreen
-          )
+          if (isProductScreen) {
+            FilterDropdownMenu(
+              isExpanded = isExpanded,
+              defaultMode = SortingMode.ASC,
+              filters = CategoryFilter.entries.toTypedArray(),
+              sortOption = parseCategoryFilter(chosenFilter),
+              onDismissRequest = { isExpanded = false },
+              onFilter = { onFilter(it) },
+            )
+          } else {
+            FilterDropdownMenu(
+              isExpanded = isExpanded,
+              defaultMode = SortingMode.DESC,
+              filters = ListFilter.entries.toTypedArray(),
+              sortOption = parseListFilter(chosenFilter),
+              onDismissRequest = { isExpanded = false },
+              onFilter = { onFilter(it) },
+            )
+          }
         }
       }
     }, // actions

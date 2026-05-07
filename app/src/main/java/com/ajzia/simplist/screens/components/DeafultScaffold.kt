@@ -23,6 +23,7 @@ import com.ajzia.simplist.ui.theme.CustomPurple
 @Composable
 fun DefaultScaffold(
   navController: NavController,
+  chosenFilter: String,
   isProductScreen: Boolean = false,
   onSearch: (String) -> Unit = {},
   onFilter: (String) -> Unit,
@@ -38,7 +39,8 @@ fun DefaultScaffold(
         scrollBehavior = scrollBehavior,
         onSearch = { onSearch(it) },
         onFilter = { onFilter(it) },
-        isProductScreen = isProductScreen
+        isProductScreen = isProductScreen,
+        chosenFilter = chosenFilter,
       )
     },
     floatingActionButton = {

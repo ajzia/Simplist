@@ -28,9 +28,11 @@ fun ListsScreen(
   val listState = rememberLazyListState()
   val lists by listsViewModel.lists.collectAsState()
   val categories by listsViewModel.categories.collectAsState(emptyList())
+  val filter by listsViewModel.filter.collectAsState("last_modified_desc")
 
   DefaultScaffold(
     navController = navController,
+    chosenFilter = filter,
     onSearch = { listsViewModel.osSearchTextChange(it) },
     onFilter = { listsViewModel.onFilterChange(it) },
   )  { paddingValues ->

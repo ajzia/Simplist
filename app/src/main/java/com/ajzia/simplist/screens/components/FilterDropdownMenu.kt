@@ -5,80 +5,55 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.ajzia.simplist.R
-import com.ajzia.simplist.model.CategoryFilter
-import com.ajzia.simplist.model.ListFilter
-import com.ajzia.simplist.model.SortingMode
+import com.ajzia.simplist.model.sorting.SortOption
+import com.ajzia.simplist.model.sorting.SortingMode
 
 @Composable
-fun FilterDropdownMenu(
+fun <T : Enum<T>> FilterDropdownMenu(
   isExpanded: Boolean,
-  isProductScreen: Boolean,
+  defaultMode: SortingMode,
+  filters: Array<T>,
+  sortOption: SortOption<T>,
   onDismissRequest: () -> Unit,
   onFilter: (String) -> Unit,
 ) {
-  val filters = if (isProductScreen) CategoryFilter.entries else ListFilter.entries
-
-  val defaultMode = if (isProductScreen) SortingMode.ASC else SortingMode.DESC
-  val reverseMode = if (isProductScreen) SortingMode.DESC else SortingMode.ASC
-
-  var chosenFilter by remember { mutableStateOf(filters.first()) }
-  var chosenMode by remember { mutableStateOf(defaultMode) }
-
   DropdownMenu(
     expanded = isExpanded,
     onDismissRequest = { onDismissRequest() }
   ) {
-
-    for (type in filters) {
-      val typeName = type.name
+    for (filterType in filters) {
+      val typeName = filterType.name
         .lowercase()
         .replace("_", " ")
         .replaceFirstChar { c -> c.uppercase() }
       DropdownMenuItem(
         text = { Text(text = typeName) },
         leadingIcon = {
-          if (chosenFilter != type) return@DropdownMenuItem
-          Icon(
-            imageVector = ImageVector.vectorResource(
-              if (chosenMode == SortingMode.ASC)
-                R.drawable.outline_arrow_upward_alt_24
-              else R.drawable.outline_arrow_downward_alt_24
-            ),
-            contentDescription = "Filter mode",
-          )
+          if (sortOption.filter == filterType) {
+            Icon(
+              imageVector = ImageVector.vectorResource(
+                if (sortOption.mode == SortingMode.ASC)
+                  R.drawable.outline_arrow_upward_alt_24
+                else R.drawable.outline_arrow_downward_alt_24
+              ),
+              contentDescription = "Filter mode",
+            )
+          }
         },
         onClick = {
-          chosenMode =
-            if (chosenFilter == type && chosenMode == defaultMode)
-              reverseMode
+          val mode = (
+            if (sortOption.filter == filterType && sortOption.mode == defaultMode)
+              defaultMode.reverse()
             else defaultMode
-          chosenFilter = type
+          )
 
-          val filter = type.name.lowercase()
-            .plus("_${chosenMode.name.lowercase()}")
-
-          onFilter(filter)
+          val newOption = SortOption(filterType, mode)
+          onFilter(newOption.filterName)
         }
       ) // DropdownMenuItem
     }
   }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun DropdownMenuPreview() {
-  FilterDropdownMenu(
-    isExpanded = true,
-    isProductScreen = false,
-    onDismissRequest = {},
-    onFilter = {}
-  )
 }

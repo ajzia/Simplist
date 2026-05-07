@@ -2,6 +2,7 @@ package com.ajzia.simplist.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ajzia.simplist.datastore.PreferencesDataStore
 import com.ajzia.simplist.firebase.FirestoreRepository
 import com.ajzia.simplist.model.Category
 import com.ajzia.simplist.model.Product
@@ -12,7 +13,6 @@ import com.ajzia.simplist.screens.utils.sortedByLocaleDescending
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
@@ -23,13 +23,13 @@ import javax.inject.Inject
 class ProductsViewModel @Inject constructor(
   private val productRepository: ProductRepository,
   private val productListRepository: ProductListRepository,
-  private val firestoreRepository: FirestoreRepository
+  private val firestoreRepository: FirestoreRepository,
+  private val preferencesDataStore: PreferencesDataStore
 ): ViewModel() {
 
   val products = productRepository.products
 
-  private val _filter = MutableStateFlow("id")
-  val filter = _filter.asStateFlow()
+  val filter = preferencesDataStore.categoryFilterFlow()
 
   private val _categories = MutableStateFlow<List<Category>>(emptyList())
   val categories =
@@ -57,17 +57,24 @@ class ProductsViewModel @Inject constructor(
     }
   }
 
-  fun onFilterChange(text: String) {
-    _filter.value = text
+  fun onFilterChange(filter: String) {
+    viewModelScope.launch {
+      preferencesDataStore.setCategoryFilter(filter)
+    }
   }
 
-  fun insertProduct(product: Product) {
+  fun insertProduct(name: String, categoryId: Int) {
+    val productName = name.trim()
+      .lowercase().replaceFirstChar { c -> c.uppercase() }
+
+    val product = Product(name = productName, categoryId = categoryId)
+
     viewModelScope.launch {
       productRepository.insertProduct(product)
 
       assignCategoryToProduct(
-        name = product.name,
-        categoryId = product.categoryId
+        name = productName,
+        categoryId = categoryId
       )
     }
   }
