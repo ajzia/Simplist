@@ -1,6 +1,8 @@
 package com.ajzia.simplist.di
 
 import android.content.Context
+import com.ajzia.simplist.firebase.CategoryRepository
+import com.ajzia.simplist.firebase.FirestoreCategoryRepository
 import com.ajzia.simplist.room.ProductDao
 import com.ajzia.simplist.room.ProductListDao
 import com.ajzia.simplist.room.ProductListDatabase
@@ -22,6 +24,14 @@ object AppModule {
   @Singleton
   fun provideFirebaseFirestore(): FirebaseFirestore {
     return FirebaseFirestore.getInstance()
+  }
+
+  @Provides
+  @Singleton
+  fun provideCategoryRepository(
+    repository: FirestoreCategoryRepository
+  ): CategoryRepository {
+    return repository
   }
 
   @Provides

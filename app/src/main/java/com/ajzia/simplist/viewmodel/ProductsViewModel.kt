@@ -3,7 +3,7 @@ package com.ajzia.simplist.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ajzia.simplist.datastore.PreferencesDataStore
-import com.ajzia.simplist.firebase.FirestoreRepository
+import com.ajzia.simplist.firebase.CategoryRepository
 import com.ajzia.simplist.model.Category
 import com.ajzia.simplist.model.Product
 import com.ajzia.simplist.room.ProductListRepository
@@ -23,7 +23,7 @@ import javax.inject.Inject
 class ProductsViewModel @Inject constructor(
   private val productRepository: ProductRepository,
   private val productListRepository: ProductListRepository,
-  private val firestoreRepository: FirestoreRepository,
+  private val categoryRepository: CategoryRepository,
   private val preferencesDataStore: PreferencesDataStore
 ): ViewModel() {
 
@@ -48,7 +48,7 @@ class ProductsViewModel @Inject constructor(
 
   fun fetchCategories() {
     viewModelScope.launch {
-      firestoreRepository.getCategoriesFlow()
+      categoryRepository.getCategoriesFlow()
         .catch { println("Error in fetching categories") }
         .collect { categories ->
           _categories.value = categories

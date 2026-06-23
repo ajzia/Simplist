@@ -1,21 +1,19 @@
 package com.ajzia.simplist.firebase
 
 import com.ajzia.simplist.model.Category
-import com.ajzia.simplist.model.Product
 import com.google.firebase.firestore.FirebaseFirestore
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.tasks.await
 
 @Singleton
-class FirestoreRepository @Inject constructor(
+class FirestoreCategoryRepository @Inject constructor(
   private val firestore: FirebaseFirestore
-) {
+) : CategoryRepository {
 
-  fun getCategoriesFlow(): Flow<List<Category>> =
+  override fun getCategoriesFlow(): Flow<List<Category>> =
     callbackFlow {
       val listenerRegistration = firestore
         .collection("categories")
