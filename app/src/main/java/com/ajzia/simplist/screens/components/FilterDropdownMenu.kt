@@ -5,9 +5,12 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.vectorResource
 import com.ajzia.simplist.R
+import com.ajzia.simplist.core.util.TestTags
 import com.ajzia.simplist.model.sorting.SortOption
 import com.ajzia.simplist.model.sorting.SortingMode
 
@@ -21,6 +24,7 @@ fun <T : Enum<T>> FilterDropdownMenu(
   onFilter: (String) -> Unit,
 ) {
   DropdownMenu(
+    modifier = Modifier.testTag(TestTags.FILTER_SECTION),
     expanded = isExpanded,
     onDismissRequest = { onDismissRequest() }
   ) {
