@@ -28,8 +28,7 @@ class ProductsViewModel @Inject constructor(
 ): ViewModel() {
 
   val products = productRepository.products
-
-  val filter = preferencesDataStore.categoryFilterFlow()
+  val filter = preferencesDataStore.getCategoryFilterFlow()
 
   private val _categories = MutableStateFlow<List<Category>>(emptyList())
   val categories =

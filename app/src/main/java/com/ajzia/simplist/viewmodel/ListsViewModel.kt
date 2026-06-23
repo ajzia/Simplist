@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 @HiltViewModel
@@ -33,11 +34,11 @@ class ListsViewModel @Inject constructor(
   private val _searchText = MutableStateFlow("")
   val searchText = _searchText.asStateFlow()
 
-  val filter = preferencesDataStore.listFilterFlow()
+  val filter = preferencesDataStore.getListFilterFlow()
 
   private val _lists = MutableStateFlow(repository.lists)
   val lists = combine(
-      searchText.debounce(100L),
+      searchText.debounce(100L.milliseconds),
       _lists.value,
       filter
     ) { text, lists, flt ->

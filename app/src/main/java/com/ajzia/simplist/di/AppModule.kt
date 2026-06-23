@@ -1,6 +1,10 @@
 package com.ajzia.simplist.di
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStoreFile
 import com.ajzia.simplist.firebase.CategoryRepository
 import com.ajzia.simplist.firebase.FirestoreCategoryRepository
 import com.ajzia.simplist.room.ProductDao
@@ -19,6 +23,17 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+  @Provides
+  @Singleton
+  fun providePreferencesDataStore(
+    @ApplicationContext context: Context
+  ): DataStore<Preferences> =
+    PreferenceDataStoreFactory.create(
+      produceFile = {
+        context.preferencesDataStoreFile("settings")
+      }
+    )
 
   @Provides
   @Singleton
