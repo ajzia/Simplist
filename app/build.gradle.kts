@@ -20,7 +20,7 @@ android {
     versionCode = 1
     versionName = "1.0"
 
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    testInstrumentationRunner = "com.ajzia.simplist.HiltTestRunner"
   }
 
   buildTypes {
@@ -44,6 +44,10 @@ kotlin {
   }
 }
 
+tasks.withType<Test>().configureEach {
+  useJUnitPlatform()
+}
+
 dependencies {
 
   implementation(libs.androidx.core.ktx)
@@ -54,14 +58,22 @@ dependencies {
   implementation(libs.androidx.ui.graphics)
   implementation(libs.androidx.ui.tooling.preview)
   implementation(libs.androidx.material3)
+  implementation(libs.core.ktx)
 
   testImplementation(libs.junit)
   testImplementation(libs.truth)
   testImplementation(libs.junit.jupiter)
+  testImplementation(libs.junit.jupiter)
+  testImplementation(libs.kotlinx.coroutines.test)
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
   androidTestImplementation(platform(libs.androidx.compose.bom))
   androidTestImplementation(libs.androidx.ui.test.junit4)
+
+  // For instrumented tests.
+  androidTestImplementation(libs.truth)
+  androidTestImplementation("com.google.dagger:hilt-android-testing:2.57.1")
+  kspAndroidTest("com.google.dagger:hilt-android-compiler:2.57.1")
 
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
