@@ -2,7 +2,7 @@ package com.ajzia.simplist.room
 
 import com.ajzia.simplist.model.ProductDetails
 import com.google.common.truth.Truth.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class ProductListConverterTest {
 

@@ -1,7 +1,7 @@
 package com.ajzia.simplist.model.sorting
 
 import com.google.common.truth.Truth.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 
 class SortParserTest {

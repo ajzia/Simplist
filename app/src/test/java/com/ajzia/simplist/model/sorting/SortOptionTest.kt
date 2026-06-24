@@ -1,6 +1,6 @@
 package com.ajzia.simplist.model.sorting
 
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import com.google.common.truth.Truth.assertThat
 
 class SortOptionTest {
