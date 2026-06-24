@@ -76,26 +76,33 @@ fun SearchField(
         )
       } else {
         IconButton(
-          ImageVector.vectorResource(
-            R.drawable.outline_arrow_back_24)
-        ) { onBack() }
+          imageVector = ImageVector.vectorResource(
+            R.drawable.outline_arrow_back_24),
+          onClick = { onBack() },
+          contentDescription = "Exit search"
+        )
       }
     }, // leadingIcon
     trailingIcon = {
       if (query == "" || !isSearch) return@TextField
       IconButton(
-        Icons.Default.Clear
-      ) { onClear() }
+        imageVector = Icons.Default.Clear,
+        onClick = { onClear() },
+        contentDescription = "Clear search"
+      )
     } // trailingIcon
   )
 }
 
 @Composable
-fun IconButton(imageVector: ImageVector, onClick: () -> Unit) {
+fun IconButton(
+  imageVector: ImageVector,
+  onClick: () -> Unit,
+  contentDescription: String? = null) {
   IconButton(onClick = onClick) {
     Icon(
       imageVector = imageVector,
-      contentDescription = null,
+      contentDescription = contentDescription,
       modifier = Modifier.size(28.dp)
     )
   }

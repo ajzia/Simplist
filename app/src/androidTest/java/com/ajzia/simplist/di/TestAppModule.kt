@@ -32,7 +32,8 @@ object TestAppModule {
   ): DataStore<Preferences> =
     PreferenceDataStoreFactory.create(
       produceFile = {
-        context.preferencesDataStoreFile("test")
+        context.preferencesDataStoreFile(
+          "test_${System.currentTimeMillis()}")
       }
     )
 

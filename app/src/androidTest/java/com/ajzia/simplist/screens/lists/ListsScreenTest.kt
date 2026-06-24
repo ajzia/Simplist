@@ -2,10 +2,13 @@ package com.ajzia.simplist.screens.lists
 
 import androidx.activity.compose.setContent
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -58,6 +61,32 @@ class ListsScreenTest {
     composeRule.onNodeWithTag(TestTags.FILTER_SECTION).assertIsDisplayed()
   }
 
+  @Test
+  fun clickToggleSearchBar_isExtensionVisible() {
+    composeRule.onNodeWithTag(TestTags.SEARCH_FIELD).assertIsNotEnabled()
+    composeRule.onNodeWithTag(TestTags.SEARCH_FIELD).performClick()
+    composeRule.onNodeWithTag(TestTags.SEARCH_FIELD).assertIsEnabled()
+  }
+
+  @Test
+  fun clickToggleSearchBar_closeWhileExtensionVisible() {
+    composeRule.onNodeWithTag(TestTags.SEARCH_FIELD).performClick()
+    composeRule.onNodeWithContentDescription("Exit search").assertIsDisplayed()
+    composeRule.onNodeWithContentDescription("Exit search").performClick()
+    composeRule.onNodeWithContentDescription("Exit search").assertDoesNotExist()
+    composeRule.onNodeWithTag(TestTags.SEARCH_FIELD).assertIsNotEnabled()
+  }
+
+  @Test
+  fun clickToggleSearchBar_clearSearch() {
+    composeRule.onNodeWithTag(TestTags.SEARCH_FIELD).assertIsNotEnabled()
+    composeRule.onNodeWithTag(TestTags.SEARCH_FIELD).performClick()
+    composeRule.onNodeWithContentDescription("Clear search").assertDoesNotExist()
+    composeRule.onNodeWithTag(TestTags.SEARCH_FIELD).performTextInput("test")
+    composeRule.onNodeWithContentDescription("Clear search").assertIsDisplayed()
+    composeRule.onNodeWithContentDescription("Clear search").performClick()
+    composeRule.onNodeWithContentDescription("Clear search").assertDoesNotExist()
+  }
 }
 
 

@@ -27,9 +27,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.ajzia.simplist.ui.theme.CustomPurple
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.ajzia.simplist.R
+import com.ajzia.simplist.core.util.TestTags
 import com.ajzia.simplist.model.sorting.CategoryFilter
 import com.ajzia.simplist.model.sorting.ListFilter
 import com.ajzia.simplist.model.sorting.SortingMode
@@ -61,7 +63,8 @@ fun TopAppBar(
               )
             )
             .fillMaxWidth(if (isSearch) 1f else 0.8f)
-            .padding(4.dp),
+            .padding(4.dp)
+            .testTag(TestTags.SEARCH_FIELD),
           isSearch = isSearch,
           onClick = { isSearch = true },
           query = query,
