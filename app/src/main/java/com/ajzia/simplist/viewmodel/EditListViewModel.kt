@@ -28,15 +28,13 @@ class EditListViewModel @Inject constructor(
     }
   }
 
-  fun insertProductList(list: ProductList) {
-    viewModelScope.launch {
-      var details = assignCategoriesToProducts(list.productsDetails)
-      details = sortProductsByCategory(details)
+  suspend fun insertProductList(list: ProductList) {
+    var details = assignCategoriesToProducts(list.productsDetails)
+    details = sortProductsByCategory(details)
 
-      repository.insertProductList(
-        list.copy(productsDetails = details)
-      )
-    }
+    repository.insertProductList(
+      list.copy(productsDetails = details)
+    )
   }
 
   fun updateProductList(list: ProductList) {

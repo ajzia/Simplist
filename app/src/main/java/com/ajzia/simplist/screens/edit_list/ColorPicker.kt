@@ -18,8 +18,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ajzia.simplist.core.util.TestTags
 import com.ajzia.simplist.ui.theme.Blue100
 import com.ajzia.simplist.ui.theme.CustomPurple
 import com.ajzia.simplist.ui.theme.colors
@@ -33,12 +37,13 @@ fun ColorPicker(
   LazyRow(
     modifier = Modifier
       .fillMaxWidth()
-      .padding(8.dp),
+      .padding(8.dp)
+      .testTag(TestTags.COLOR_LIST),
     horizontalArrangement = Arrangement.SpaceEvenly
   ) {
     itemsIndexed(colors) { index, color ->
       ColorBox(
-        Modifier.clickable(
+        modifier = Modifier.clickable(
           interactionSource = remember { MutableInteractionSource() },
           indication = ripple(
             color = CustomPurple,
@@ -46,7 +51,9 @@ fun ColorPicker(
             bounded = false
           )
         ) { onColorClick(color) },
-        color, color == chosenColor
+        color = color,
+        isChosen = color == chosenColor,
+        index = index
       )
     }
   }
@@ -56,7 +63,8 @@ fun ColorPicker(
 fun ColorBox(
   modifier: Modifier,
   color: Color,
-  isChosen: Boolean
+  isChosen: Boolean,
+  index: Int
 ) {
   Box(modifier = modifier
     .size(40.dp)
@@ -67,6 +75,10 @@ fun ColorBox(
       color = (if (isChosen) Color.Gray else Color.Gray)
     )
     .background(color)
+    .testTag(TestTags.COLOR + " $index")
+    .semantics {
+      selected = isChosen
+    }
   )
 }
 

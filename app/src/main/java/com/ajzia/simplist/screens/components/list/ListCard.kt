@@ -18,19 +18,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.ajzia.simplist.R
+import com.ajzia.simplist.core.util.TestTags
 import com.ajzia.simplist.model.Category
 import com.ajzia.simplist.model.ProductList
 
 @Composable
 fun ListCard(
   modifier: Modifier = Modifier,
+  index: Int,
   productList: ProductList,
   categories: List<Category>,
   onProductCheck: (Int) -> Unit = {},
-  onCheckAll: (List<Int>, Boolean) -> Unit = {i, j -> },
+  onCheckAll: (List<Int>, Boolean) -> Unit = {_,_ -> },
   onEdit: () -> Unit = {},
   onArchive: () -> Unit,
   onCopy: () -> Unit,
@@ -58,7 +61,8 @@ fun ListCard(
         style = MaterialTheme.typography.headlineSmall,
         modifier = Modifier
           .fillMaxWidth(0.9f)
-          .wrapContentSize(),
+          .wrapContentSize()
+          .testTag(TestTags.LIST_TITLE + " $index"),
         text = productList.name,
         color = (
           if (!isUnArchived) Color.Gray
@@ -67,7 +71,7 @@ fun ListCard(
       )
 
       val _categories = categories.plus(
-        Category(Int.MAX_VALUE, "Inne")
+        Category(Int.MAX_VALUE, "Other")
       )
 
       for (category in _categories.sortedBy { it.id }) {
@@ -118,7 +122,7 @@ fun ListCard(
         if (isUnArchived) {
           BottomButton(
             icon = ImageVector.vectorResource(R.drawable.outline_edit_24),
-            description = "Edit list",
+            description = "Edit list $index",
             onClick = { onEdit() }
           )
         }
@@ -126,7 +130,7 @@ fun ListCard(
         BottomButton(
           icon = ImageVector.vectorResource(R.drawable.outline_content_copy_24),
           onClick = { onCopy() },
-          description = "Copy list to stash"
+          description = "Copy list to stash $index"
         )
 
         BottomButton(
@@ -138,8 +142,8 @@ fun ListCard(
           ),
           onClick = { onArchive() },
           description = (
-            if (isUnArchived) "Archive list"
-            else "Unarchive list"
+            if (isUnArchived) "Archive list $index"
+            else "Unarchive list $index"
           ),
         )
 
@@ -147,7 +151,7 @@ fun ListCard(
           BottomButton(
             icon = ImageVector.vectorResource(R.drawable.outline_delete_24),
             onClick = { onDelete() },
-            description = "Delete list"
+            description = "Delete list $index"
           )
         }
       } // BottomButtons

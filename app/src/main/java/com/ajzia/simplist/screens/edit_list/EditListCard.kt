@@ -19,10 +19,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ajzia.simplist.core.util.TestTags
 import com.ajzia.simplist.model.Product
 import com.ajzia.simplist.model.ProductDetails
 import com.ajzia.simplist.ui.theme.Blue100
@@ -54,7 +56,9 @@ fun EditListCard(
 
       TextField(
         textStyle = MaterialTheme.typography.bodyLarge,
-        modifier = Modifier.fillMaxWidth(0.9f),
+        modifier = Modifier
+          .fillMaxWidth(0.9f)
+          .testTag(TestTags.TITLE_FIELD),
         value = name,
         onValueChange = { onNameChange(it) },
         placeholder = { Text("Enter list name") },
@@ -84,6 +88,8 @@ fun EditListCard(
             isChecked = details.isChecked,
             color = color,
             products = products,
+            index = i.toString(),
+            quantityTag = TestTags.CHANGEABLE_QUANTITY_FIELD,
             onRemove = { onRemove(i) },
             onQuantityChange = {
               onQuantityChange(i, it)

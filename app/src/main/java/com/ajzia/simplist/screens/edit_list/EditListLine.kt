@@ -19,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,16 +26,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ajzia.simplist.core.util.TestTags
 import com.ajzia.simplist.model.Product
 import com.ajzia.simplist.ui.theme.Pink100
 import com.ajzia.simplist.ui.theme.checkboxColorMap
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun EditListLine(
@@ -46,24 +44,15 @@ fun EditListLine(
   isChecked: Boolean = false,
   color: Color,
   products: List<Product>,
+  index: String = "",
+  quantityTag: String = TestTags.QUANTITY_FIELD,
   onRemove: () -> Unit = {},
   onQuantityChange: (String) -> Unit = {},
-  onAdd: (String, String) -> Unit = {i, j -> },
+  onAdd: (String, String) -> Unit = {_,_ -> },
 ) {
   val nameState = rememberTextFieldState(name)
-  var quantity by remember { mutableStateOf(
+  var quantity by remember(name) { mutableStateOf(
     if (prodQuantity != -1) prodQuantity.toString() else "") }
-
-  var debounceJob by remember { mutableStateOf<Job?>(null) }
-  LaunchedEffect(quantity) {
-    debounceJob?.cancel()
-    debounceJob = launch {
-      delay(500)
-      if(prodQuantity != -1) {
-        onQuantityChange(quantity)
-      }
-    }
-  }
 
   Row(
     modifier = modifier,
@@ -86,7 +75,9 @@ fun EditListLine(
 
     if (name.isBlank()) {
       AutoCompleteTextField(
-        modifier = Modifier.fillMaxWidth(0.5f),
+        modifier = Modifier
+          .fillMaxWidth(0.5f)
+          .testTag(TestTags.PRODUCT_FIELD),
         value = nameState.text.toString(),
         onValueChange = { nameState.setTextAndPlaceCursorAtEnd(it) },
         dropdownColor = color,
@@ -106,9 +97,13 @@ fun EditListLine(
 
     TextField(
       textStyle = MaterialTheme.typography.bodyLarge,
-      modifier = Modifier.fillMaxWidth(0.45f),
+      modifier = Modifier
+        .fillMaxWidth(0.45f)
+        .testTag("$quantityTag$index"),
       value = quantity,
-      onValueChange = { quantity = it },
+      onValueChange = {
+        quantity = it
+        onQuantityChange(quantity) },
       placeholder = { Text("0") },
       colors = TextFieldDefaults.colors(
         focusedContainerColor = Color.Transparent,
@@ -137,7 +132,9 @@ fun EditListLine(
           onRemove()
         }
       },
-      modifier = Modifier.padding(start = 8.dp),
+      modifier = Modifier
+        .padding(start = 8.dp)
+        .testTag(TestTags.ADD_REMOVE + " $index"),
     ) {
       Icon(
         imageVector = (
@@ -146,7 +143,7 @@ fun EditListLine(
         ),
         contentDescription = (
           if (name.isBlank()) "Add product to the list"
-          else "Remove product from list"
+          else "Remove product from the list"
         ),
       )
     } // IconButton

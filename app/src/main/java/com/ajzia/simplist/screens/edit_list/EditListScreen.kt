@@ -15,6 +15,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,6 +29,9 @@ import com.ajzia.simplist.screens.components.DefaultScaffold
 import com.ajzia.simplist.screens.utils.withExtraBottom
 import com.ajzia.simplist.ui.theme.DefaultCardColor
 import com.ajzia.simplist.viewmodel.EditListViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun EditListScreen(
@@ -37,6 +41,7 @@ fun EditListScreen(
 ) {
   val context = LocalContext.current
   val listState = rememberLazyListState()
+  val scope = rememberCoroutineScope()
 
   var name by remember { mutableStateOf( "") }
   var color by remember { mutableIntStateOf(DefaultCardColor.toArgb()) }
@@ -79,20 +84,26 @@ fun EditListScreen(
         onBack()
 
       } else {
-        editListViewModel.insertProductList(
-          ProductList(
-            name = name,
-            color = color,
-            productsDetails = productsDetails
+        // Fix for changing screens before the list was inserted
+        // I'll do State vars in VMs instead someday
+        scope.launch {
+           editListViewModel.insertProductList(
+            ProductList(
+              name = name,
+              color = color,
+              productsDetails = productsDetails
+            )
           )
-        )
 
-        makeToast(context,
-          "Successfully added the list",
-          Toast.LENGTH_LONG
-        )
-
-        onBack()
+          // Toast and back on the main thread
+          withContext(Dispatchers.Main) {
+            makeToast(context,
+              "Successfully added the list",
+              Toast.LENGTH_LONG
+            )
+            onBack()
+          }
+        }
       }
     } // onSubmit
   ) { paddingValues ->
