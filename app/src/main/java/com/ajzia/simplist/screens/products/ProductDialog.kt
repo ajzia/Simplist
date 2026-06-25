@@ -1,6 +1,8 @@
 package com.ajzia.simplist.screens.products
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,11 +23,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.ajzia.simplist.core.util.TestTags
 
 @Composable
 fun ProductDialog(
@@ -38,7 +41,14 @@ fun ProductDialog(
   Dialog(
     onDismissRequest = { onDismissRequest() }
   ) {
+    Box( // Solely for testing
+      Modifier
+        .testTag(TestTags.DISMISS_DIALOG)
+        .clickable { onDismissRequest() }
+    )
+
     Card(
+      modifier = Modifier.testTag(TestTags.DIALOG),
       shape = RoundedCornerShape(12.dp),
     ) {
       Column(
@@ -57,7 +67,9 @@ fun ProductDialog(
           verticalAlignment = Alignment.CenterVertically
         ) {
           TextField(
-            modifier = Modifier.fillMaxWidth(0.8f),
+            modifier = Modifier
+              .fillMaxWidth(0.8f)
+              .testTag(TestTags.PRODUCT_NAME),
             textStyle = MaterialTheme.typography.bodyMedium,
             value = productName,
             onValueChange = { onNameChange(it) },
@@ -82,7 +94,7 @@ fun ProductDialog(
           ) {
             Icon(
               imageVector = Icons.Default.Add,
-              contentDescription = "Add product to the category",
+              contentDescription = "Add product to $categoryName",
             )
           } // IconButton
         }

@@ -1,5 +1,6 @@
 package com.ajzia.simplist.screens.products
 
+import android.util.Log
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -9,7 +10,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import com.ajzia.simplist.core.util.TestTags
 import com.ajzia.simplist.model.Product
 
 @Composable
@@ -31,16 +34,22 @@ fun CategoryDisplay(
       name = name,
       isVisible = isVisible,
       onCategoryClick = {
-        isVisible = !isVisible
+        if (products.isNotEmpty()) { isVisible = !isVisible }
       },
       onAdd = onAdd
     )
 
-    if (isVisible && products.isNotEmpty()) {
-      ProductGrid(
-        products = products,
-        onRemove = { onRemove(it) }
-      )
+    if (isVisible) {
+      if (products.isNotEmpty()) {
+        Log.i(TestTags.PRODUCT_GRID + " $name", "UMMM")
+        ProductGrid(
+          modifier = Modifier.testTag(TestTags.PRODUCT_GRID + " $name"),
+          products = products,
+          onRemove = { onRemove(it) }
+        )
+      } else {
+        isVisible = false
+      }
     }
   }
 

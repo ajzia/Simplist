@@ -22,14 +22,15 @@ import com.ajzia.simplist.model.Product
 
 @Composable
 fun ProductGrid(
+  modifier: Modifier,
   products: List<Product>,
   onRemove: (Product) -> Unit
 ) {
   Column(
-    modifier = Modifier.padding(8.dp),
+    modifier = modifier.padding(8.dp),
     verticalArrangement = Arrangement.spacedBy(8.dp)
   ) {
-    for (chunk in products.sortedBy { it -> it.name }.chunked(2)) {
+    for (chunk in products.sortedBy { it.name }.chunked(2)) {
       Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp),
         horizontalArrangement = Arrangement.SpaceAround

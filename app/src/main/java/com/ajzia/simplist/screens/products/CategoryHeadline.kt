@@ -48,7 +48,7 @@ fun CategoryHeadline(
       ) {
         Icon(
           imageVector = Icons.Default.Add,
-          contentDescription = "Add product"
+          contentDescription = "Add to $name"
         )
       }
 
@@ -61,7 +61,7 @@ fun CategoryHeadline(
               if (isVisible) ImageVector.vectorResource(R.drawable.baseline_arrow_drop_up_24)
               else ImageVector.vectorResource(R.drawable.baseline_arrow_drop_down_24)
               ),
-          contentDescription = "Show/hide products"
+          contentDescription = "Show/hide products $name"
         )
       }
 
