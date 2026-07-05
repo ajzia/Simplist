@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -26,7 +23,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.ajzia.simplist.R
+import com.ajzia.simplist.ui.theme.AppDrawables
+import com.ajzia.simplist.ui.theme.AppIcons
 import com.ajzia.simplist.ui.theme.DimmedCustomPurple
 
 @Composable
@@ -70,14 +68,13 @@ fun SearchField(
     leadingIcon = {
       if (!isSearch) {
         Icon(
-          imageVector = Icons.Default.Search,
+          imageVector = AppIcons.Search,
           contentDescription = null,
           modifier = Modifier.size(28.dp)
         )
       } else {
         IconButton(
-          imageVector = ImageVector.vectorResource(
-            R.drawable.outline_arrow_back_24),
+          imageVector = ImageVector.vectorResource(AppDrawables.Back),
           onClick = { onBack() },
           contentDescription = "Exit search"
         )
@@ -86,7 +83,7 @@ fun SearchField(
     trailingIcon = {
       if (query == "" || !isSearch) return@TextField
       IconButton(
-        imageVector = Icons.Default.Clear,
+        imageVector = AppIcons.Clear,
         onClick = { onClear() },
         contentDescription = "Clear search"
       )

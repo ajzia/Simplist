@@ -9,10 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.vectorResource
-import com.ajzia.simplist.R
 import com.ajzia.simplist.core.util.TestTags
 import com.ajzia.simplist.model.sorting.SortOption
 import com.ajzia.simplist.model.sorting.SortingMode
+import com.ajzia.simplist.ui.theme.AppDrawables
 
 @Composable
 fun <T : Enum<T>> FilterDropdownMenu(
@@ -40,8 +40,8 @@ fun <T : Enum<T>> FilterDropdownMenu(
             Icon(
               imageVector = ImageVector.vectorResource(
                 if (sortOption.mode == SortingMode.ASC)
-                  R.drawable.outline_arrow_upward_alt_24
-                else R.drawable.outline_arrow_downward_alt_24
+                  AppDrawables.ArrowUpward
+                else AppDrawables.ArrowDownward
               ),
               contentDescription = "Filter mode",
             )

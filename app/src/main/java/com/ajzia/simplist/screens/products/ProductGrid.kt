@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -19,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.ajzia.simplist.model.Product
+import com.ajzia.simplist.ui.theme.AppIcons
 
 @Composable
 fun ProductGrid(
@@ -58,7 +57,7 @@ fun ProductGrid(
                 modifier = Modifier.size(28.dp),
               ) {
                 Icon(
-                  imageVector = Icons.Default.Clear,
+                  imageVector = AppIcons.Clear,
                   contentDescription = "Remove product from list",
                 )
               }

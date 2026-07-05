@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -18,7 +16,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ajzia.simplist.R
+import com.ajzia.simplist.ui.theme.AppDrawables
+import com.ajzia.simplist.ui.theme.AppIcons
 
 @Composable
 fun CategoryHeadline(
@@ -47,7 +46,7 @@ fun CategoryHeadline(
         onClick = { onAdd() }
       ) {
         Icon(
-          imageVector = Icons.Default.Add,
+          imageVector = AppIcons.Add,
           contentDescription = "Add to $name"
         )
       }
@@ -58,8 +57,8 @@ fun CategoryHeadline(
       ) {
         Icon(
           imageVector = (
-              if (isVisible) ImageVector.vectorResource(R.drawable.baseline_arrow_drop_up_24)
-              else ImageVector.vectorResource(R.drawable.baseline_arrow_drop_down_24)
+              if (isVisible) ImageVector.vectorResource(AppDrawables.ArrowDropUp)
+              else ImageVector.vectorResource(AppDrawables.ArrowDropDown)
               ),
           contentDescription = "Show/hide products $name"
         )

@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,6 +27,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.ajzia.simplist.core.util.TestTags
+import com.ajzia.simplist.ui.theme.AppIcons
 
 @Composable
 fun ProductDialog(
@@ -93,7 +92,7 @@ fun ProductDialog(
             modifier = Modifier.size(28.dp),
           ) {
             Icon(
-              imageVector = Icons.Default.Add,
+              imageVector = AppIcons.Add,
               contentDescription = "Add product to $categoryName",
             )
           } // IconButton

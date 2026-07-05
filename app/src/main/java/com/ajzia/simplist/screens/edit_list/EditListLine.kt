@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
@@ -33,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ajzia.simplist.core.util.TestTags
 import com.ajzia.simplist.model.Product
+import com.ajzia.simplist.ui.theme.AppIcons
 import com.ajzia.simplist.ui.theme.Pink100
 import com.ajzia.simplist.ui.theme.checkboxColorMap
 
@@ -138,8 +136,8 @@ fun EditListLine(
     ) {
       Icon(
         imageVector = (
-          if (name.isBlank()) Icons.Default.Add
-          else Icons.Default.Clear
+          if (name.isBlank()) AppIcons.Add
+          else AppIcons.Clear
         ),
         contentDescription = (
           if (name.isBlank()) "Add product to the list"

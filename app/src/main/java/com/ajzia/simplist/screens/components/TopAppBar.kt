@@ -30,13 +30,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import com.ajzia.simplist.R
 import com.ajzia.simplist.core.util.TestTags
 import com.ajzia.simplist.model.sorting.CategoryFilter
 import com.ajzia.simplist.model.sorting.ListFilter
 import com.ajzia.simplist.model.sorting.SortingMode
 import com.ajzia.simplist.model.sorting.parseCategoryFilter
 import com.ajzia.simplist.model.sorting.parseListFilter
+import com.ajzia.simplist.ui.theme.AppDrawables
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -92,7 +92,7 @@ fun TopAppBar(
         Box {
           IconButton(onClick = { isExpanded = !isExpanded }) {
             Icon(
-              imageVector = ImageVector.vectorResource(R.drawable.outline_filter_alt_24),
+              imageVector = ImageVector.vectorResource(AppDrawables.Filter),
               contentDescription = "Filter contents",
               modifier = Modifier.size(40.dp)
             )

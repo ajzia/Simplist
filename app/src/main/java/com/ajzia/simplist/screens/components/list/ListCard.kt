@@ -21,10 +21,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import com.ajzia.simplist.R
 import com.ajzia.simplist.core.util.TestTags
 import com.ajzia.simplist.model.Category
 import com.ajzia.simplist.model.ProductList
+import com.ajzia.simplist.ui.theme.AppDrawables
 
 @Composable
 fun ListCard(
@@ -121,14 +121,14 @@ fun ListCard(
 
         if (isUnArchived) {
           BottomButton(
-            icon = ImageVector.vectorResource(R.drawable.outline_edit_24),
+            icon = ImageVector.vectorResource(AppDrawables.EditList),
             description = "Edit list $index",
             onClick = { onEdit() }
           )
         }
 
         BottomButton(
-          icon = ImageVector.vectorResource(R.drawable.outline_content_copy_24),
+          icon = ImageVector.vectorResource(AppDrawables.CopyList),
           onClick = { onCopy() },
           description = "Copy list to stash $index"
         )
@@ -136,9 +136,9 @@ fun ListCard(
         BottomButton(
           icon = (
             if (isUnArchived)
-              ImageVector.vectorResource(R.drawable.outline_archive_24)
+              ImageVector.vectorResource(AppDrawables.ArchiveList)
             else
-              ImageVector.vectorResource(R.drawable.outline_unarchive_24)
+              ImageVector.vectorResource(AppDrawables.UnarchiveList)
           ),
           onClick = { onArchive() },
           description = (
@@ -149,7 +149,7 @@ fun ListCard(
 
         if (!isUnArchived) {
           BottomButton(
-            icon = ImageVector.vectorResource(R.drawable.outline_delete_24),
+            icon = ImageVector.vectorResource(AppDrawables.DeleteList),
             onClick = { onDelete() },
             description = "Delete list $index"
           )

@@ -12,8 +12,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import com.ajzia.simplist.R
 import com.ajzia.simplist.nav.NavGraph
+import com.ajzia.simplist.ui.theme.AppDrawables
 
 @Composable
 fun BottomNavigationBar(
@@ -24,17 +24,17 @@ fun BottomNavigationBar(
   val items: List<BottomNavItem> = listOf(
     BottomNavItem(
       "Archive",
-      ImageVector.vectorResource(R.drawable.outline_archive_24),
+      ImageVector.vectorResource(AppDrawables.Archive),
       NavGraph.Archive.route
     ),
     BottomNavItem(
       "Lists",
-      ImageVector.vectorResource(R.drawable.outline_list_alt_24),
+      ImageVector.vectorResource(AppDrawables.Lists),
       NavGraph.Lists.route
     ),
     BottomNavItem(
       "Products",
-      ImageVector.vectorResource(R.drawable.outline_potted_plant_24),
+      ImageVector.vectorResource(AppDrawables.Product),
       NavGraph.Products.route
     )
   )
