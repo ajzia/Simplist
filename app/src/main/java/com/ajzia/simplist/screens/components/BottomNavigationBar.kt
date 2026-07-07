@@ -2,13 +2,13 @@ package com.ajzia.simplist.screens.components
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -40,8 +40,9 @@ fun BottomNavigationBar(
   )
 
   NavigationBar(
-    containerColor = Color.White,
-    tonalElevation = 8.dp
+    containerColor = MaterialTheme.colorScheme.surface,
+    contentColor = MaterialTheme.colorScheme.onSurface,
+    tonalElevation = 4.dp
   ) {
     items.forEach { item ->
       NavigationBarItem(
@@ -53,9 +54,14 @@ fun BottomNavigationBar(
         },
         onClick = { onItemClick(item.route) },
         selected = currentRoute == item.route,
-        label = { Text(item.title) },
+        label = {
+          Text(
+            item.title,
+            style = MaterialTheme.typography.labelSmall
+          )
+        },
         colors = NavigationBarItemDefaults.colors(
-          indicatorColor = Color(0x4A9462F6)
+          indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
         )
       )
     } // items

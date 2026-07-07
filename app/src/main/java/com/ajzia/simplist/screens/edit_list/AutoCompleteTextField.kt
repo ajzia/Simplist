@@ -8,6 +8,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuItemColors
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -27,6 +28,7 @@ import com.ajzia.simplist.model.Product
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,7 +48,7 @@ fun AutoCompleteTextField(
   LaunchedEffect(value) {
     debounceJob?.cancel()
     debounceJob = launch {
-      delay(100)
+      delay(100.milliseconds)
       filteredSuggestions = products.filter {
         value.isNotEmpty() && it.name.contains(value, ignoreCase = true)
       }
@@ -68,6 +70,10 @@ fun AutoCompleteTextField(
       maxLines = 1,
       placeholder = { Text("Product name") },
       colors = TextFieldDefaults.colors(
+        focusedPlaceholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+        unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
         focusedContainerColor = Color.Transparent,
         unfocusedContainerColor = Color.Transparent,
         disabledContainerColor = Color.Transparent,
@@ -98,6 +104,14 @@ fun AutoCompleteTextField(
               onValueChange(suggestion.name)
               isExpanded = false
             },
+            colors = MenuItemColors(
+              textColor = MaterialTheme.colorScheme.onSurface,
+              disabledTextColor = MaterialTheme.colorScheme.onSurface,
+              leadingIconColor = Color.Transparent,
+              trailingIconColor = Color.Transparent,
+              disabledLeadingIconColor = Color.Transparent,
+              disabledTrailingIconColor = Color.Transparent
+            ),
             contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
           )
         }

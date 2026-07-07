@@ -31,8 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.ajzia.simplist.core.util.TestTags
 import com.ajzia.simplist.model.Product
 import com.ajzia.simplist.ui.theme.AppIcons
-import com.ajzia.simplist.ui.theme.Pink100
-import com.ajzia.simplist.ui.theme.checkboxColorMap
+import com.ajzia.simplist.ui.theme.SimplistTheme
 
 @Composable
 fun EditListLine(
@@ -40,7 +39,7 @@ fun EditListLine(
   name: String = "",
   prodQuantity: Int = -1,
   isChecked: Boolean = false,
-  color: Color,
+  colorIdx: Int,
   products: List<Product>,
   index: String = "",
   quantityTag: String = TestTags.QUANTITY_FIELD,
@@ -58,16 +57,18 @@ fun EditListLine(
     horizontalArrangement = Arrangement.SpaceAround
   ) {
 
+    val checkBoxColor = SimplistTheme.cardColorList[colorIdx].checkboxColor
+
     Checkbox(
       checked = isChecked,
       enabled = false,
       onCheckedChange = null,
       colors = CheckboxDefaults.colors(
-        checkedColor = checkboxColorMap[color]!!,
+        checkedColor = checkBoxColor,
         checkmarkColor = Color.Unspecified,
-        uncheckedColor = checkboxColorMap[color]!!,
-        disabledCheckedColor = checkboxColorMap[color]!!,
-        disabledUncheckedColor = checkboxColorMap[color]!!
+        uncheckedColor = checkBoxColor,
+        disabledCheckedColor = checkBoxColor,
+        disabledUncheckedColor = checkBoxColor
       )
     )
 
@@ -78,22 +79,23 @@ fun EditListLine(
           .testTag(TestTags.PRODUCT_FIELD),
         value = nameState.text.toString(),
         onValueChange = { nameState.setTextAndPlaceCursorAtEnd(it) },
-        dropdownColor = color,
+        dropdownColor = SimplistTheme.cardColorList[colorIdx].cardColor,
         products = products,
         onSuggestionSelected = { nameState.setTextAndPlaceCursorAtEnd(it) }
       )
     } else {
-      Text(
+      Text( // name
         style = MaterialTheme.typography.bodyLarge,
         modifier = Modifier
           .fillMaxWidth(0.5f)
           .padding(start = 12.dp),
         text = name,
         maxLines = 1,
+        color = MaterialTheme.colorScheme.onSurface
       )
     }
 
-    TextField(
+    TextField( // quantity
       textStyle = MaterialTheme.typography.bodyLarge,
       modifier = Modifier
         .fillMaxWidth(0.45f)
@@ -104,6 +106,10 @@ fun EditListLine(
         onQuantityChange(quantity) },
       placeholder = { Text("0") },
       colors = TextFieldDefaults.colors(
+        focusedPlaceholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+        unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
         focusedContainerColor = Color.Transparent,
         unfocusedContainerColor = Color.Transparent,
         disabledContainerColor = Color.Transparent,
@@ -143,6 +149,7 @@ fun EditListLine(
           if (name.isBlank()) "Add product to the list"
           else "Remove product from the list"
         ),
+        tint = checkBoxColor
       )
     } // IconButton
 
@@ -156,7 +163,7 @@ fun AddListLinePreview() {
     name = "Carrot",
     prodQuantity = 10,
     isChecked = false,
-    color = Pink100,
+    colorIdx = 2,
     products = emptyList(),
   )
 }

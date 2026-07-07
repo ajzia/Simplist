@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -24,15 +25,14 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ajzia.simplist.core.util.TestTags
-import com.ajzia.simplist.ui.theme.Blue100
-import com.ajzia.simplist.ui.theme.CustomPurple
-import com.ajzia.simplist.ui.theme.colors
+import com.ajzia.simplist.ui.theme.SimplistTheme
 
 @Composable
 fun ColorPicker(
-  chosenColor: Color,
-  onColorClick: (Color) -> Unit
+  chosenColor: Int,
+  onColorClick: (Int) -> Unit
 ) {
+  val cardColorList = SimplistTheme.cardColorList
 
   LazyRow(
     modifier = Modifier
@@ -41,18 +41,18 @@ fun ColorPicker(
       .testTag(TestTags.COLOR_LIST),
     horizontalArrangement = Arrangement.SpaceEvenly
   ) {
-    itemsIndexed(colors) { index, color ->
+    itemsIndexed(cardColorList) { index, colors ->
       ColorBox(
         modifier = Modifier.clickable(
           interactionSource = remember { MutableInteractionSource() },
           indication = ripple(
-            color = CustomPurple,
+            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
             radius = 22.dp,
             bounded = false
           )
-        ) { onColorClick(color) },
-        color = color,
-        isChosen = color == chosenColor,
+        ) { onColorClick(index) },
+        color = colors.cardColor,
+        isChosen = index == chosenColor,
         index = index
       )
     }
@@ -72,7 +72,7 @@ fun ColorBox(
     .clip(CircleShape)
     .border(
       width = (if (isChosen) 2.dp else 1.dp), shape = CircleShape,
-      color = (if (isChosen) Color.Gray else Color.Gray)
+      color = MaterialTheme.colorScheme.onSurface
     )
     .background(color)
     .testTag(TestTags.COLOR + " $index")
@@ -85,6 +85,6 @@ fun ColorBox(
 @Preview(showBackground = true)
 @Composable
 fun ColorPickerPreview() {
-  var chosenColor: Color = Blue100
+  var chosenColor = 1
   ColorPicker(chosenColor) { color -> chosenColor = color }
 }

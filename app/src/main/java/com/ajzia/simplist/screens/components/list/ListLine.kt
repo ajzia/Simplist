@@ -14,14 +14,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.ajzia.simplist.model.ProductDetails
-import com.ajzia.simplist.ui.theme.Pink100
-import com.ajzia.simplist.ui.theme.checkboxColorMap
+import com.ajzia.simplist.ui.theme.SimplistTheme
 
 @Composable
 fun ListLine(
   modifier: Modifier = Modifier,
   details: ProductDetails,
-  color: Color,
+  colorIdx: Int,
   onChecked: () -> Unit,
   isEnabled: Boolean = true
 ) {
@@ -31,6 +30,7 @@ fun ListLine(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.SpaceEvenly
   ) {
+    val checkBoxColor = SimplistTheme.cardColorList[colorIdx].checkboxColor
 
     Checkbox(
       checked = details.isChecked,
@@ -38,9 +38,9 @@ fun ListLine(
       enabled = isEnabled,
       colors = CheckboxDefaults.run {
         colors(
-            checkedColor = checkboxColorMap[color]!!,
+            checkedColor = checkBoxColor,
             checkmarkColor = Color.Unspecified,
-            uncheckedColor = checkboxColorMap[color]!!
+            uncheckedColor = checkBoxColor
           )
       }
     )
@@ -82,7 +82,7 @@ fun ListLinePreview() {
 
   ListLine(
     details = details,
-    color = Pink100,
+    colorIdx = 1,
     onChecked = {},
   )
 }

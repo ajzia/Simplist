@@ -94,7 +94,7 @@ fun ProductsScreen(
         CategoryDisplay(
           modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 8.dp),
+            .padding(horizontal = 12.dp, vertical = 6.dp),
           name = category.name,
           products = productsByCategory[category.id].orEmpty(),
           onAdd = {

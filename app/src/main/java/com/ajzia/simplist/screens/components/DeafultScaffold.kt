@@ -2,6 +2,7 @@ package com.ajzia.simplist.screens.components
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -14,8 +15,6 @@ import androidx.navigation.NavController
 import com.ajzia.simplist.nav.NavGraph
 import com.ajzia.simplist.ui.theme.AppDrawables
 import com.ajzia.simplist.ui.theme.AppIcons
-import com.ajzia.simplist.ui.theme.CustomGreen
-import com.ajzia.simplist.ui.theme.CustomPurple
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,7 +43,6 @@ fun DefaultScaffold(
     floatingActionButton = {
       if (!isProductScreen) {
         FAB(
-          containerColor = CustomPurple,
           imageVector = AppIcons.Add,
           contentDescription = "Create new list",
           onClick = {
@@ -83,11 +81,14 @@ fun DefaultScaffold(
             onClick = { onBack() }
           )
         },
+        colors = TopAppBarDefaults.topAppBarColors(
+          containerColor = MaterialTheme.colorScheme.primary,
+          actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
+        )
       )
     },
     floatingActionButton = {
       FAB(
-        containerColor = CustomGreen,
         imageVector = AppIcons.Submit,
         contentDescription = "Submit list",
         onClick = { onSubmit() }

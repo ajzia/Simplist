@@ -12,14 +12,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.ajzia.simplist.ui.theme.Pink100
-import com.ajzia.simplist.ui.theme.checkboxColorMap
+import com.ajzia.simplist.ui.theme.SimplistTheme
 
 @Composable
 fun CategoryListLine(
   modifier: Modifier = Modifier,
   name: String,
-  color: Color,
+  colorIdx: Int,
   isEnabled: Boolean = true,
   isChecked: Boolean,
   onChecked: () -> Unit,
@@ -31,15 +30,17 @@ fun CategoryListLine(
     horizontalArrangement = Arrangement.Start
   ) {
 
+    val checkBoxColor = SimplistTheme.cardColorList[colorIdx].checkboxColor
+
     Checkbox(
       checked = isChecked,
       onCheckedChange = { onChecked() },
       enabled = isEnabled,
       colors = CheckboxDefaults.run {
         colors(
-          checkedColor = checkboxColorMap[color]!!,
+          checkedColor = checkBoxColor,
           checkmarkColor = Color.Unspecified,
-          uncheckedColor = checkboxColorMap[color]!!
+          uncheckedColor = checkBoxColor
         )
       }
     )
@@ -62,7 +63,7 @@ fun CategoryListLine(
 fun CategoryListLinePreview() {
   CategoryListLine(
     name = "Fruit",
-    color = Pink100,
+    colorIdx = 1,
     isChecked = false,
     onChecked = {},
   )

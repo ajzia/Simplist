@@ -35,7 +35,7 @@ fun <T : Enum<T>> FilterDropdownMenu(
         .replaceFirstChar { c -> c.uppercase() }
       DropdownMenuItem(
         text = { Text(text = typeName) },
-        leadingIcon = {
+        trailingIcon = {
           if (sortOption.filter == filterType) {
             Icon(
               imageVector = ImageVector.vectorResource(

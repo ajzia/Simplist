@@ -18,8 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -27,7 +25,6 @@ import com.ajzia.simplist.model.ProductDetails
 import com.ajzia.simplist.model.ProductList
 import com.ajzia.simplist.screens.components.DefaultScaffold
 import com.ajzia.simplist.screens.utils.withExtraBottom
-import com.ajzia.simplist.ui.theme.DefaultCardColor
 import com.ajzia.simplist.viewmodel.EditListViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,7 +41,7 @@ fun EditListScreen(
   val scope = rememberCoroutineScope()
 
   var name by remember { mutableStateOf( "") }
-  var color by remember { mutableIntStateOf(DefaultCardColor.toArgb()) }
+  var colorIdx by remember { mutableIntStateOf(0) }
 
   val productsDetails = remember { mutableStateListOf<ProductDetails>() }
   var productNames: List<String> = mutableListOf()
@@ -72,7 +69,7 @@ fun EditListScreen(
         editListViewModel.updateProductList(
           list!!.copy(
             name = name,
-            color = color,
+            color = colorIdx,
             productsDetails = productsDetails,
           )
         )
@@ -90,7 +87,7 @@ fun EditListScreen(
            editListViewModel.insertProductList(
             ProductList(
               name = name,
-              color = color,
+              color = colorIdx,
               productsDetails = productsDetails
             )
           )
@@ -111,7 +108,7 @@ fun EditListScreen(
     LaunchedEffect(list) {
       if (list != null) {
         name = list!!.name
-        color = list!!.color
+        colorIdx = list!!.color
 
         for (details in list!!.productsDetails) {
           productsDetails.add(details)
@@ -137,8 +134,8 @@ fun EditListScreen(
 
       item {
         ColorPicker(
-          chosenColor = Color(color)
-        ) { color = it.toArgb() }
+          chosenColor = colorIdx
+        ) { colorIdx = it }
       } // Color Picker
 
       item {
@@ -147,7 +144,7 @@ fun EditListScreen(
             .fillMaxWidth()
             .padding(16.dp),
           name = name,
-          color = Color(color),
+          colorIdx = colorIdx,
           productsDetails = productsDetails,
           products = products,
           onNameChange = { name = it },

@@ -82,12 +82,18 @@ class ListsViewModel @Inject constructor(
     }
   }
 
-  private fun updateProductList(list: ProductList) =
-    viewModelScope.launch {
+  private fun updateProductList(
+    list: ProductList,
+    updateTime: Boolean = true
+  ) = viewModelScope.launch {
+    if (updateTime) {
       repository.updateProductList(list.copy(
         lastEdited = System.currentTimeMillis()
       ))
+    } else {
+      repository.updateProductList(list)
     }
+  }
 
   fun deleteProductList(list: ProductList) =
     viewModelScope.launch {
@@ -101,7 +107,7 @@ class ListsViewModel @Inject constructor(
       } else item
     }
 
-    updateProductList(list.copy(productsDetails = updatedDetails))
+    updateProductList(list.copy(productsDetails = updatedDetails), false)
   }
 
   fun onCheckAll(list: ProductList, indexes: List<Int>, value: Boolean) {
@@ -111,11 +117,18 @@ class ListsViewModel @Inject constructor(
       } else item
     }
 
-    updateProductList(list.copy(productsDetails = updatedDetails))
+    updateProductList(list.copy(productsDetails = updatedDetails), false)
   }
 
   fun onArchive(list: ProductList) {
-    updateProductList(list.copy(isArchived = !list.isArchived))
+    val updatedDetails = list.productsDetails.map { item ->
+      item.copy(isChecked = false)
+    }
+
+    updateProductList(list.copy(
+      isArchived = !list.isArchived,
+      productsDetails = updatedDetails
+    ))
   }
 
   fun onCopy(list: ProductList){//, clipboard: ClipboardManager?) {

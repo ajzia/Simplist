@@ -2,94 +2,118 @@ package com.ajzia.simplist.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
-
-
-val CustomGray = Color(0x00C9C9C9)
-val CustomPurple = Color(0xD5A97BEF)
-val DimmedCustomPurple = Color(0xD5D4BCFF)
-val CustomGreen = Color(123,239,169)
-
-val DefaultCardColor = Color(0xFFFFCDD2)
-
-val Red100 = Color(0xFFFFCDD2)
-val Red300 = Color(0xFFE57373)
-
-val Pink100 = Color(0xFFF8BBD0)
-val Pink300 = Color(0xFFF06292)
-
-val Purple100 = Color(0xFFE1BEE7)
-val Purple300 = Color(0xFFBA68C8)
-
-val DeepPurple100 = Color(0xFFD1C4E9)
-val DeepPurple300 = Color(0xFF9575CD)
-
-val Indigo100 = Color(0xFFC5CAE9)
-val Indigo300 = Color(0xFF7986CB)
-
-val Blue100 = Color(0xFFBBDEFB)
-val Blue300 = Color(0xFF64B5F6)
-
-val LightBlue100 = Color(0xFFB3E5FC)
-val LightBlue300 = Color(0xFF4FC3F7)
-
-val Cyan100 = Color(0xFFB2EBF2)
-val Cyan300 = Color(0xFF4DD0E1)
-
-val Teal100 = Color(0xFFB2DFDB)
-val Teal300 = Color(0xFF4DB6AC)
+val theme_light_primary = Color(0xFF3A7D6C)
+val theme_light_onPrimary = Color(0xFFFFFFFF)
+val theme_light_primaryContainer = Color(0xFFA7C4BC)
+val theme_light_onPrimaryContainer = Color(0xFF1F2A24)
+val theme_light_inversePrimary = Color(0xFF2F6F61)
+val theme_light_secondary = Color(0xFFD1E5E0)
+val theme_light_onSecondary = Color(0xFF1F2A24)
+val theme_light_secondaryContainer = Color(0xFFE6F1ED)
+val theme_light_onSecondaryContainer = Color(0xFF1F2A24)
+val theme_light_tertiary = Color(0xFFF4A261)
+val theme_light_onTertiary = Color(0xFF1F2A24)
+val theme_light_tertiaryContainer = Color(0xFFFFE2C6)
+val theme_light_onTertiaryContainer = Color(0xFF1F2A24)
+val theme_light_background = Color(0xFFF6F7F5)
+val theme_light_onBackground = Color(0xFF1F2A24)
+val theme_light_surface = Color(0xFFFFFFFF)
+val theme_light_onSurface = Color(0xFF1F2A24)
+val theme_light_surfaceVariant = Color(0xFFE3ECE8)
+val theme_light_onSurfaceVariant = Color(0xFF6B7B73)
+val theme_light_surfaceTint = Color(0xFF3A7D6C)
+val theme_light_inverseSurface = Color(0xFF1F2A24)
+val theme_light_inverseOnSurface = Color(0xFFF6F7F5)
+val theme_light_error = Color(0xFFB3261E)
+val theme_light_onError = Color(0xFFFFFFFF)
+val theme_light_errorContainer = Color(0xFFFFDAD6)
+val theme_light_onErrorContainer = Color(0xFF410002)
+val theme_light_outline = Color(0xFF6B7B73)
+val theme_light_outlineVariant = Color(0xFFA7C4BC)
+val theme_light_scrim = Color(0xFF000000)
+val theme_light_surfaceBright = Color(0xFFFFFFFF)
+val theme_light_surfaceDim = Color(0xFFEDEEEB)
+val theme_light_surfaceContainer = Color(0xFFF1F3F1)
+val theme_light_surfaceContainerLow = Color(0xFFF6F7F5)
+val theme_light_surfaceContainerHigh = Color(0xFFE9ECE9)
+val theme_light_surfaceContainerHighest = Color(0xFFE3E6E3)
+val theme_light_surfaceContainerLowest = Color(0xFFFFFFFF)
 
 
-val Green100 = Color(0xFFC8E6C9)
-val Green300 = Color(0xFF81C784)
+val theme_dark_primary = Color(0xFF4A6A5F)
+val theme_dark_onPrimary = Color(0xFFE6EFEA)
+val theme_dark_primaryContainer = Color(0xFF3E5F58)
+val theme_dark_onPrimaryContainer = Color(0xFFE6EFEA)
+val theme_dark_inversePrimary = Color(0xFFA7C4BC)
+val theme_dark_secondary = Color(0xFF3E5F58)
+val theme_dark_onSecondary = Color(0xFFE6EFEA)
+val theme_dark_secondaryContainer = Color(0xFF2A3A35)
+val theme_dark_onSecondaryContainer = Color(0xFFA7B7B0)
+val theme_dark_tertiary = Color(0xFF9E7340)
+val theme_dark_onTertiary = Color(0xFF121714)
+val theme_dark_tertiaryContainer = Color(0xFF5A3D22)
+val theme_dark_onTertiaryContainer = Color(0xFFE6EFEA)
+val theme_dark_background = Color(0xFF121714)
+val theme_dark_onBackground = Color(0xFFE6EFEA)
+val theme_dark_surface = Color(0xFF1A211D)
+val theme_dark_onSurface = Color(0xFFE6EFEA)
+val theme_dark_surfaceVariant = Color(0xFF26312C)
+val theme_dark_onSurfaceVariant = Color(0xFFA7B7B0)
+val theme_dark_surfaceTint = Color(0xFF2F6F61)
+val theme_dark_inverseSurface = Color(0xFFE6EFEA)
+val theme_dark_inverseOnSurface = Color(0xFF121714)
+val theme_dark_error = Color(0xFFFFB4A9)
+val theme_dark_onError = Color(0xFF690005)
+val theme_dark_errorContainer = Color(0xFF93000A)
+val theme_dark_onErrorContainer = Color(0xFFFFDAD6)
+val theme_dark_outline = Color(0xFFA7B7B0)
+val theme_dark_outlineVariant = Color(0xFF3E5F58)
+val theme_dark_scrim = Color(0xFF000000)
+val theme_dark_surfaceBright = Color(0xFF2A332F)
+val theme_dark_surfaceDim = Color(0xFF121714)
+val theme_dark_surfaceContainer = Color(0xFF1A211D)
+val theme_dark_surfaceContainerLow = Color(0xFF161C18)
+val theme_dark_surfaceContainerHigh = Color(0xFF222B26)
+val theme_dark_surfaceContainerHighest = Color(0xFF2A3530)
+val theme_dark_surfaceContainerLowest = Color(0xFF0E120F)
 
-val LightGreen100 = Color(0xFFDCEDC8)
-val LightGreen400 = Color(0xFF9CCC65)
-
-val Lime100 = Color(0xFFF0F4C3)
-val Lime500 = Color(0xFFCDDC39)
-
-val Yellow100 = Color(0xFFFFF9C4)
-val Yellow600 = Color(0xFFFDD835)
-
-val Amber100 = Color(0xFFFFECB3)
-val Amber500 = Color(0xFFFFC107)
-
-val Orange100 = Color(0xFFFFE0B2)
-val Orange400 = Color(0xFFFFA726)
-
-val DeepOrange100 = Color(0xFFFFCCBC)
-val DeepOrange300 = Color(0xFFFF8A65)
-
-val Brown100 = Color(0xFFD7CCC8)
-val Brown300 = Color(0xFFA1887F)
-
-val Gray100 = Color(0xFFF5F5F5)
-val Gray400 = Color(0xFFBDBDBD)
-
-val BlueGray100 = Color(0xFFCFD8DC)
-val BlueGray300 = Color(0xFF90A4AE)
-
-val colors = listOf(
-  Red100, Pink100, Purple100, DeepPurple100,
-  Indigo100, Blue100, LightBlue100, Cyan100,
-  Teal100, Green100, LightGreen100, Lime100,
-  Yellow100, Amber100, Orange100, DeepOrange100,
-  Brown100, Gray100, BlueGray100,
+data class CardColor(
+  val cardColor: Color,
+  val checkboxColor: Color
 )
 
-val checkboxColorMap = mapOf(
-  Red100 to Red300, Pink100 to Pink300, Purple100 to Purple300,
-  DeepPurple100 to DeepPurple300, Indigo100 to Indigo300,
-  Blue100 to Blue300, LightBlue100 to LightBlue300, Cyan100 to Cyan300,
-  Teal100 to Teal300, Green100 to Green300, LightGreen100 to LightGreen400,
-  Lime100 to Lime500, Yellow100 to Yellow600, Amber100 to Amber500,
-  Orange100 to Orange400, DeepOrange100 to DeepOrange300,
-  Brown100 to Brown300, Gray100 to Gray400, BlueGray100 to BlueGray300,
+val theme_dark_card_color_palette = listOf(
+  CardColor(Color(0xFF3E5F58), Color(0xFFA7C4BC)),
+  CardColor(Color(0xFF446B63), Color(0xFFB8D8D0)),
+  CardColor(Color(0xFF3F6860), Color(0xFFA7D8CA)),
+  CardColor(Color(0xFF4E5F45), Color(0xFFAFC99D)),
+  CardColor(Color(0xFF4E593B), Color(0xFFA9C36E)),
+  CardColor(Color(0xFF5C5337), Color(0xFFE1C35C)),
+  CardColor(Color(0xFF5B4A38), Color(0xFFE6B67E)),
+  CardColor(Color(0xFF675444), Color(0xFFE5BE8F)),
+  CardColor(Color(0xFF6A4C37), Color(0xFFF2A65A)),
+  CardColor(Color(0xFF634645), Color(0xFFD89A95)),
+  CardColor(Color(0xFF524768), Color(0xFFB6A8D8)),
+  CardColor(Color(0xFF465675), Color(0xFF9DB5EA)),
+  CardColor(Color(0xFF405B70), Color(0xFF8FC5F0)),
+  CardColor(Color(0xFF3F6873), Color(0xFF84D0DD)),
+  CardColor(Color(0xFF37403C), Color(0xFFA7B7B0)),
+)
+
+val theme_light_card_color_palette = listOf(
+  CardColor(Color(0xFFA7C4BC),  Color(0xFF3A7D6C)),
+  CardColor(Color(0xFFBFD6C4),  Color(0xFF5E8C6A)),
+  CardColor(Color(0xFFC9DDD5),  Color(0xFF2F6F61)),
+  CardColor(Color(0xFFD9ECE5),  Color(0xFF4C8A7B)),
+  CardColor(Color(0xFFD9E3BC),  Color(0xFF7B9644)),
+  CardColor(Color(0xFFF1E3B5),  Color(0xFFC9A631)),
+  CardColor(Color(0xFFE7DCC8),  Color(0xFFC28A52)),
+  CardColor(Color(0xFFF2E5D5),  Color(0xFFD39A68)),
+  CardColor(Color(0xFFF8D6BE),  Color(0xFFF4A261)),
+  CardColor(Color(0xFFE8C8C6),  Color(0xFFC46D68)),
+  CardColor(Color(0xFFD9D4E7),  Color(0xFF8D7BC2)),
+  CardColor(Color(0xFFCFDDF4),  Color(0xFF6D8FD6)),
+  CardColor(Color(0xFFCDE4F2),  Color(0xFF5B9FD6)),
+  CardColor(Color(0xFFD7EDF2),  Color(0xFF58A9B8)),
+  CardColor(Color(0xFFE3ECE8),  Color(0xFF6B7B73)),
 )

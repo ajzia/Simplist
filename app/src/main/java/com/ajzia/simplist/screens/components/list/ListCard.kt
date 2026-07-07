@@ -24,7 +24,9 @@ import androidx.compose.ui.unit.dp
 import com.ajzia.simplist.core.util.TestTags
 import com.ajzia.simplist.model.Category
 import com.ajzia.simplist.model.ProductList
+import com.ajzia.simplist.screens.components.IconButton
 import com.ajzia.simplist.ui.theme.AppDrawables
+import com.ajzia.simplist.ui.theme.SimplistTheme
 
 @Composable
 fun ListCard(
@@ -46,11 +48,12 @@ fun ListCard(
     elevation = CardDefaults.cardElevation(4.dp),
     colors = CardDefaults.cardColors(
       containerColor = (
-        if (!isUnArchived) Color.LightGray
-        else Color(productList.color)
+        if (!isUnArchived) MaterialTheme.colorScheme.secondary
+        else SimplistTheme.cardColorList[productList.color].cardColor
       )
     ),
-    border = BorderStroke(1.dp, Color.Gray)
+    border = BorderStroke(width = 1.dp,
+      color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
   ) {
     Column(
       modifier = Modifier.padding(vertical = 8.dp, horizontal = 8.dp),
@@ -84,7 +87,7 @@ fun ListCard(
           modifier = Modifier
             .padding(horizontal = 4.dp),
           name = category.name,
-          color = Color(productList.color),
+          colorIdx = productList.color,
           isEnabled = isUnArchived,
           isChecked = (
               details.all { it.value.isChecked }
@@ -102,7 +105,7 @@ fun ListCard(
               .fillMaxWidth()
               .padding(horizontal = 4.dp),
             details = det.value,
-            color = Color(productList.color),
+            colorIdx = productList.color,
             onChecked = { onProductCheck(det.index) },
             isEnabled = isUnArchived,
           )
@@ -120,38 +123,38 @@ fun ListCard(
       ) {
 
         if (isUnArchived) {
-          BottomButton(
-            icon = ImageVector.vectorResource(AppDrawables.EditList),
-            description = "Edit list $index",
-            onClick = { onEdit() }
+          IconButton(
+            imageVector = ImageVector.vectorResource(AppDrawables.EditList),
+            onClick = { onEdit() },
+            contentDescription = "Edit list $index"
           )
         }
 
-        BottomButton(
-          icon = ImageVector.vectorResource(AppDrawables.CopyList),
+        IconButton(
+          imageVector = ImageVector.vectorResource(AppDrawables.CopyList),
           onClick = { onCopy() },
-          description = "Copy list to stash $index"
+          contentDescription = "Copy list to stash $index"
         )
 
-        BottomButton(
-          icon = (
+        IconButton(
+          imageVector = (
             if (isUnArchived)
               ImageVector.vectorResource(AppDrawables.ArchiveList)
             else
               ImageVector.vectorResource(AppDrawables.UnarchiveList)
           ),
           onClick = { onArchive() },
-          description = (
+          contentDescription = (
             if (isUnArchived) "Archive list $index"
             else "Unarchive list $index"
           ),
         )
 
         if (!isUnArchived) {
-          BottomButton(
-            icon = ImageVector.vectorResource(AppDrawables.DeleteList),
+          IconButton(
+            imageVector = ImageVector.vectorResource(AppDrawables.DeleteList),
             onClick = { onDelete() },
-            description = "Delete list $index"
+            contentDescription = "Delete list $index"
           )
         }
       } // BottomButtons

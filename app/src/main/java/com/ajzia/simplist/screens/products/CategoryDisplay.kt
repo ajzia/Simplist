@@ -1,9 +1,10 @@
 package com.ajzia.simplist.screens.products
 
-import android.util.Log
+import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,29 +27,32 @@ fun CategoryDisplay(
   var isVisible by remember { mutableStateOf(false) }
 
   Card(
-    modifier = modifier,
-    shape = RoundedCornerShape(8.dp),
+    modifier = modifier.border(
+      width = 1.dp,
+      color = MaterialTheme.colorScheme.outline,
+      shape = RoundedCornerShape(12.dp)
+    ),
+    shape = RoundedCornerShape(12.dp),
     elevation = CardDefaults.cardElevation(8.dp),
+    colors = CardDefaults.cardColors(
+      containerColor = MaterialTheme.colorScheme.secondary,
+      contentColor = MaterialTheme.colorScheme.onSecondary
+    )
   ) {
     CategoryHeadline(
       name = name,
       isVisible = isVisible,
-      onCategoryClick = {
-        if (products.isNotEmpty()) { isVisible = !isVisible }
-      },
+      onCategoryClick = { isVisible = !isVisible },
       onAdd = onAdd
     )
 
     if (isVisible) {
       if (products.isNotEmpty()) {
-        Log.i(TestTags.PRODUCT_GRID + " $name", "UMMM")
         ProductGrid(
           modifier = Modifier.testTag(TestTags.PRODUCT_GRID + " $name"),
           products = products,
           onRemove = { onRemove(it) }
         )
-      } else {
-        isVisible = false
       }
     }
   }

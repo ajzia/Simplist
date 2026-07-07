@@ -8,7 +8,7 @@ data class ProductList(
   @PrimaryKey(autoGenerate = true)
   val id: Int = 0,
   var name: String,
-  var color: Int,
+  var color: Int, // index
   var isArchived: Boolean = false,
   var productsDetails: List<ProductDetails>,
   var dateCreated: Long = System.currentTimeMillis(),

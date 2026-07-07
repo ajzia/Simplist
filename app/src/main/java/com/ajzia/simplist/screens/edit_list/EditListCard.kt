@@ -27,13 +27,13 @@ import androidx.compose.ui.unit.dp
 import com.ajzia.simplist.core.util.TestTags
 import com.ajzia.simplist.model.Product
 import com.ajzia.simplist.model.ProductDetails
-import com.ajzia.simplist.ui.theme.Blue100
+import com.ajzia.simplist.ui.theme.SimplistTheme
 
 @Composable
 fun EditListCard(
   modifier: Modifier = Modifier,
   name: String,
-  color: Color,
+  colorIdx: Int,
   productsDetails: List<ProductDetails>,
   products: List<Product>,
   onNameChange: (String) -> Unit,
@@ -45,7 +45,8 @@ fun EditListCard(
     modifier = modifier,
     shape = RoundedCornerShape(24.dp),
     elevation = CardDefaults.cardElevation(4.dp),
-    colors = CardDefaults.cardColors(containerColor = color),
+    colors = CardDefaults.cardColors(
+      containerColor = SimplistTheme.cardColorList[colorIdx].cardColor),
     border = BorderStroke(1.dp, Color.Gray)
   ) {
     Column(
@@ -54,7 +55,7 @@ fun EditListCard(
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-      TextField(
+      TextField( // title
         textStyle = MaterialTheme.typography.bodyLarge,
         modifier = Modifier
           .fillMaxWidth(0.9f)
@@ -63,6 +64,10 @@ fun EditListCard(
         onValueChange = { onNameChange(it) },
         placeholder = { Text("Enter list name") },
         colors = TextFieldDefaults.colors(
+          focusedPlaceholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+          unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+          focusedTextColor = MaterialTheme.colorScheme.onSurface,
+          unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
           focusedContainerColor = Color.Transparent,
           unfocusedContainerColor = Color.Transparent,
           disabledContainerColor = Color.Transparent,
@@ -86,7 +91,7 @@ fun EditListCard(
             name = details.name,
             prodQuantity = details.quantity,
             isChecked = details.isChecked,
-            color = color,
+            colorIdx = colorIdx,
             products = products,
             index = i.toString(),
             quantityTag = TestTags.CHANGEABLE_QUANTITY_FIELD,
@@ -99,7 +104,7 @@ fun EditListCard(
 
       EditListLine(
         modifier = modifier,
-        color = color,
+        colorIdx = colorIdx,
         products = products,
         onAdd = onAdd
       )
@@ -124,12 +129,12 @@ fun EditListCardPreview() {
 
   EditListCard(
     name = "",
-    color = Blue100,
+    colorIdx = 3,
     productsDetails = details,
     products = emptyList(),
     onNameChange = {},
     onRemove = {},
-    onQuantityChange = {i, j -> },
-    onAdd = {i, j -> },
+    onQuantityChange = {_,_ -> },
+    onAdd = {_,_ -> },
   )
 }

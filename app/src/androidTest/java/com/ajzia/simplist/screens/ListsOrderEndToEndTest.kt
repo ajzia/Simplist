@@ -23,8 +23,9 @@ import com.ajzia.simplist.screens.archive.ArchiveScreen
 import com.ajzia.simplist.screens.edit_list.EditListScreen
 import com.ajzia.simplist.screens.lists.ListsScreen
 import com.ajzia.simplist.screens.products.ProductsScreen
+import com.ajzia.simplist.ui.theme.CardColor
+import com.ajzia.simplist.ui.theme.LocalListColors
 import com.ajzia.simplist.ui.theme.SimplistTheme
-import com.ajzia.simplist.ui.theme.colors
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -42,12 +43,16 @@ class ListsOrderEndToEndTest {
   @get:Rule(order = 1)
   val composeRule = createAndroidComposeRule<MainActivity>()
 
+  lateinit var cardColorList: List<CardColor>
+
   @Before
   fun setUp() {
     hiltRule.inject()
     composeRule.activity.setContent {
       val navController = rememberNavController()
       SimplistTheme {
+        cardColorList = LocalListColors.current
+
         NavHost(
           navController = navController,
           startDestination = NavGraph.Lists.route
@@ -98,7 +103,7 @@ class ListsOrderEndToEndTest {
     for (i in 1..3) {
       composeRule.onNodeWithContentDescription("Create new list").performClick()
       // Change color
-      val randomColor: Int = colors.indices.random()
+      val randomColor: Int = cardColorList.indices.random()
       composeRule.onNodeWithTag(TestTags.COLOR_LIST)
         .performScrollToIndex(randomColor)
       composeRule.onNodeWithTag(TestTags.COLOR + " $randomColor")
