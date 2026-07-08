@@ -47,7 +47,7 @@ fun EditListCard(
     elevation = CardDefaults.cardElevation(4.dp),
     colors = CardDefaults.cardColors(
       containerColor = SimplistTheme.cardColorList[colorIdx].cardColor),
-    border = BorderStroke(1.dp, Color.Gray)
+    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
   ) {
     Column(
       modifier = Modifier.padding(8.dp),

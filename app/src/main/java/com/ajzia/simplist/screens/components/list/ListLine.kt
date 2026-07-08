@@ -50,7 +50,8 @@ fun ListLine(
       text = details.name, maxLines = 1,
       style = MaterialTheme.typography.bodyLarge,
       color = (
-        if (details.isChecked || !isEnabled) Color.Gray
+        if (details.isChecked || !isEnabled)
+          MaterialTheme.colorScheme.onSurfaceVariant
         else Color.Unspecified
       )
     )
@@ -66,7 +67,8 @@ fun ListLine(
       style = MaterialTheme.typography.bodyLarge,
       maxLines = 1,
       color = (
-        if (details.isChecked || !isEnabled) Color.Gray
+        if (details.isChecked || !isEnabled)
+          MaterialTheme.colorScheme.onSurfaceVariant
         else Color.Unspecified
       ),
       textAlign = TextAlign.Start

@@ -92,7 +92,7 @@ fun AutoCompleteTextField(
         modifier = Modifier.exposedDropdownSize(),
         expanded = isExpanded,
         containerColor = dropdownColor,
-        border = BorderStroke(1.dp, Color.Gray),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         onDismissRequest = { isExpanded = false },
         properties = PopupProperties(focusable = false)
       ) {

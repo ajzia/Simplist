@@ -50,7 +50,8 @@ fun CategoryListLine(
       text = name, maxLines = 1,
       style = MaterialTheme.typography.bodyLarge,
       color = (
-          if (isChecked || !isEnabled) Color.Gray
+          if (isChecked || !isEnabled)
+            MaterialTheme.colorScheme.onSurfaceVariant
           else Color.Unspecified
           )
     )

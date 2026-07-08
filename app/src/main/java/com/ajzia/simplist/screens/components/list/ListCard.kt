@@ -68,7 +68,8 @@ fun ListCard(
           .testTag(TestTags.LIST_TITLE + " $index"),
         text = productList.name,
         color = (
-          if (!isUnArchived) Color.Gray
+          if (!isUnArchived)
+            MaterialTheme.colorScheme.onSurfaceVariant
           else Color.Unspecified
         ),
       )
